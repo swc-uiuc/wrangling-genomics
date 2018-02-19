@@ -201,7 +201,7 @@ will move some of these hidden files to the `data` directory your created at [th
 last lesson](http://www.datacarpentry.org/shell-genomics/06-organization/).  
 
 ~~~
-$ mv ~/.dc_sampledata_lite/untrimmed_fastq/ ~/dc_workshop/data/
+$ ln -s /home/classroom/hpcbio/DC-genomics-2018/.dc_sampledata_lite/untrimmed_fastq/ ~/dc_workshop/data/
 ~~~
 {: .bash}
 
