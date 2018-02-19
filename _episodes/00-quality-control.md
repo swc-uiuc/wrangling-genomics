@@ -197,7 +197,7 @@ Here, we see positions within the read in which the boxes span a much wider rang
 ## Running FastQC  
 
 We will be working with a set of sample data that is located in a hidden directory (`.dc_sampledata_lite`). First, we
-will move some of these hidden files to the `data` directory your created at [the end of our
+will create a symbolic link to some of these hidden files to the `data` directory your created at [the end of our
 last lesson](http://www.datacarpentry.org/shell-genomics/06-organization/).  
 
 ~~~
@@ -205,10 +205,10 @@ $ ln -s /home/classroom/hpcbio/DC-genomics-2018/.dc_sampledata_lite/untrimmed_fa
 ~~~
 {: .bash}
 
-Navigate to your FASTQ dataset: 
+Navigate to your data directory: 
 
 ~~~
-$ cd ~/dc_workshop/data/untrimmed_fastq/
+$ cd ~/dc_workshop/data/
 ~~~
 {: .bash}
 
@@ -221,7 +221,7 @@ $ cd ~/dc_workshop/data/untrimmed_fastq/
 >> ## Solution
 >>  
 >> ~~~
->> $ ls -l -h
+>> $ ls -l -h untrimmed_fastq/
 >> ~~~
 >> {: .bash}
 >> 
@@ -240,11 +240,13 @@ $ cd ~/dc_workshop/data/untrimmed_fastq/
 > {: .solution}
 {: .challenge}
 
-To run the FastQC program, we need to tell our computer where the program is located 
-(in `~/FastQC`).  FastQC can accept multiple file names as input, so we can use the *.fastq wildcard to run FastQC on all of the FASTQ files in this directory.
+To run the FastQC program, we need to load the FASTQC module on Biocluster. Remember to take note of which specific module we have loaded (i.e. module list).  FastQC can accept multiple file names as input, so we can use the *.fastq wildcard to run FastQC on all of the FASTQ files in this directory.
 
 ~~~
-$ ~/FastQC/fastqc *.fastq
+$ module load FastQC
+$ module list
+$ cd ../
+$ fastqc -o ./ untrimmed_fastq/*.fastq
 ~~~
 {: .bash}
 
@@ -333,7 +335,7 @@ $ open SRR097977_fastqc.html
 ~~~
 {: .bash}
 
-However, if you try this on our AWS instance, you'll get an error: 
+However, if you try this on Biocluster, you'll get an error: 
 
 ~~~
 Couldn't get a file descriptor referring to the console
