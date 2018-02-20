@@ -291,12 +291,11 @@ $ ls
 {: .bash}
 
 ~~~
-SRR097977.fastq        SRR098027.fastq	      SRR098281.fastq
 SRR097977_fastqc.html  SRR098027_fastqc.html  SRR098281_fastqc.html
 SRR097977_fastqc.zip   SRR098027_fastqc.zip   SRR098281_fastqc.zip
-SRR098026.fastq        SRR098028.fastq	      SRR098283.fastq
 SRR098026_fastqc.html  SRR098028_fastqc.html  SRR098283_fastqc.html
 SRR098026_fastqc.zip   SRR098028_fastqc.zip   SRR098283_fastqc.zip
+untrimmed_fastq
 ~~~
 {: .output}
 
@@ -338,13 +337,13 @@ $ open SRR097977_fastqc.html
 However, if you try this on Biocluster, you'll get an error: 
 
 ~~~
-Couldn't get a file descriptor referring to the console
+bash: open: command not found
 ~~~
 {: .output}
 
-This is because the AWS instance we're using doesn't have any web
-browsers installed on it, so the remote computer doesn't know how to 
-open the file. We want to look at the webpage summary reports, so 
+This is because the Biocluster doesn't have the `open` command or any web
+browsers installed on it, so it doesn't have the tools to open this file. 
+We want to look at the webpage summary reports, so 
 let's transfer them to our local computers (i.e. your laptop).
 
 To transfer a file from a remote server to our own machines, we will
@@ -374,17 +373,17 @@ $ mkdir ~/Desktop/fastqc_html
 Now we can transfer our HTML files to our local computer using `scp`.
 
 ~~~
-$ scp dcuser@ec2-34-238-162-94.compute-1.amazonaws.com:~/dc_workshop/results/fastqc_untrimmed_reads/*.html ~/Desktop/fastqc_html
+$ scp hpcbio##@biologin.igb.illinois.edu:~/dc_workshop/results/fastqc_untrimmed_reads/*.html ~/Desktop/fastqc_html/
 ~~~
 {: .bash}
 
 This looks really complicated, so let's break it down. The first part
-of the command `dcuser@ec2-34-238-162-94.compute-1.amazonaws.com` is
-the address for your remote computer. Make sure you replace everything
-after `dcuser@` with your instance number (the one you used to log in). 
+of the command `hpcbio##@biologin.igb.illinois.edu` is
+the address for Biocluster. Make sure you replace the `hpcbio##` with
+your temporary username. 
 
 The second part starts with a `:` and then gives the absolute path
-of the files you want to transfer from your remote computer. Don't
+of the files you want to transfer from the Biocluster. Don't
 forget the `:`. We used a wildcard (`*.html`) to indicate that we want all of
 the HTML files. 
 
@@ -432,9 +431,9 @@ tabs in a single window or six separate browser windows.
 
 Now that we've looked at our HTML reports to get a feel for the data,
 let's look more closely at the other output files. Go back to the tab
-in your terminal program that is connected to your AWS instance
-(the tab lab will start with `dcuser@ip`) and make sure you're in
-our results subdirectory.   
+in your terminal program that is connected to your Biocluster login
+(the tab lab will start with `hpcbio##@biologin`) and make sure you're in
+the results subdirectory.   
 
 ~~~
 $ cd ~/dc_workshop/results/fastqc_untrimmed_reads/
@@ -570,7 +569,7 @@ increase the odds that the program won't do what its readers think it does.
 > ~~~
 > {: .bash}
 > 
-> When you check your history later, it will help your remember what you did!
+> When you check your history later, it will help you remember what you did!
 >
 {: .callout}
 
