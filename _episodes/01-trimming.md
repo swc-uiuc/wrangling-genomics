@@ -105,7 +105,7 @@ In this example, we've told Trimmomatic:
 | code   | meaning |
 | ------- | ---------- |
 | `SE` | that it will be taking a single end file as input |
-| `-threads 4` | to use four computing threads to run (this will spead up our run) |
+| `-threads 4` | to use four computing threads to run (this will speed up our run) |
 | `-phred64` | that the input file uses phred-64 encoding for quality scores |
 | `SRR_1056.fastq` | the input file name |
 |  `SRR_1056_trimmed.fastq` | the output file to create |
@@ -114,14 +114,26 @@ In this example, we've told Trimmomatic:
 
 ## Running Trimmomatic
 
-Now we will run Trimmomatic on our data. To begin, navigate to your data directory:
+Now we will run Trimmomatic on our data. To begin, we'll need to request more CPUs. By
+default, Biocluster will assign you one CPU, but you can request more with the `-n` option.
+To do this, we'll need to first exit the compute node we are on now, and then log onto a new compute
+node while requesting more CPUs.
 
 ~~~
-$ cd ~/dc_workshop/data/
+$ exit  #Exits current compute node
+$ srun --pty -p classroom -n 4 bash
 ~~~
 {: .bash}
 
-Lets also make a directory for our output to be written to.
+Navigate to your data directory and reload the Trimmomatic module:
+
+~~~
+$ cd ~/dc_workshop/data/
+$ module load Trimmomatic/0.36-Java-1.8.0_121
+~~~
+{: .bash}
+
+Then make a directory for your output to be written to:
 
 ~~~
 $ mkdir trimmed_fastq
@@ -129,8 +141,8 @@ $ mkdir trimmed_fastq
 {: .bash}
 
 We are going to run Trimmomatic on one of our single-end samples. We
-will use a sliding window of size 4 that will remove bases if their
-phred score is below 20 (like in our example above). We will also
+will use a sliding window of size 4 that will remove bases if the average 
+phred score of that window is below 20 (like in our example above). We will also
 discard any reads that do not have at least 20 bases remaining after
 this trimming step.
 
@@ -139,17 +151,19 @@ $ java -jar $EBROOTTRIMMOMATIC/trimmomatic-0.36.jar SE untrimmed_fastq/SRR098283
 ~~~
 {: .bash}
 
-Notice that we needed to give the absolute path to our copy of the
-Trimmomatic program.
+Your output will look something like this:
 
 ~~~
-TrimmomaticSE: Started with arguments: SRR098283.fastq SRR098283.fastq_trim.fastq SLIDINGWINDOW:4:20 MINLEN:20
-Automatically using 2 threads
+TrimmomaticSE: Started with arguments:
+ untrimmed_fastq/SRR098283.fastq trimmed_fastq/SRR098283.fastq_trim.fastq SLIDINGWINDOW:4:20 MINLEN:20
+Automatically using 4 threads
 Quality encoding detected as phred33
 Input Reads: 21564058 Surviving: 17030985 (78.98%) Dropped: 4533073 (21.02%)
 TrimmomaticSE: Completed successfully
 ~~~
 {: .output}
+
+Once you're finished, attempt the following exercise:
 
 > ## Exercise
 >
@@ -165,19 +179,20 @@ TrimmomaticSE: Completed successfully
 > {: .solution}
 {: .challenge}
 
-You may have noticed that Trimmomatic automatically detected the
+You may have noticed that Trimmomatic not only automatically used 4 threads (i.e. CPUs or processors), 
+but it also detected the
 quality encoding of our sample. It is always a good idea to
 double-check this or to enter the quality encoding manually.
 
 We can confirm that we have our output file:
 
 ~~~
-$ ls SRR098283*
+$ ls trimmed_fastq/SRR098283*
 ~~~
 {: .bash}
 
 ~~~
-SRR098283.fastq  SRR098283.fastq_trim.fastq
+trimmed_fastq/SRR098283.fastq_trim.fastq
 ~~~
 {: .output}
 
@@ -185,13 +200,13 @@ The output file is also a FASTQ file. It should be smaller than our
 input file because we've removed reads. We can confirm this:
 
 ~~~
-$ ls SRR098283* -l -h
+$ ls *_fastq/SRR098283* -lh
 ~~~
 {: .bash}
 
 ~~~
--rw-r--r-- 1 dcuser dcuser 3.9G Jul 30  2015 SRR098283.fastq
--rw-rw-r-- 1 dcuser dcuser 3.0G Nov  7 23:10 SRR098283.fastq_trim.fastq
+-rw-rw-r-- 1 hpcinstru02 hpcinstru02 3.0G Feb 19 19:47 SRR098283.fastq_trim.fastq
+-rw-r--r-- 1 jholmes5 hpcbio_instr 3.9G Feb 19 17:23 ../untrimmed_fastq/SRR098283.fastq
 ~~~
 {: .output}
 
@@ -203,15 +218,22 @@ is that we can use a `for` loop to iterate through our sample files
 quickly!
 
 ~~~
-$ for infile in *.fastq
+$ for infile in `ls untrimmed_fastq`
 > do
 > outfile="${infile}"_trim.fastq
-> java -jar ~/Trimmomatic-0.32/trimmomatic-0.32.jar SE "${infile}" "${outfile}" SLIDINGWINDOW:4:20 MINLEN:20
+> java -jar $EBROOTTRIMMOMATIC/trimmomatic-0.36.jar SE "untrimmed_fastq/${infile}" "trimmed_fastq/${outfile}" SLIDINGWINDOW:4:20 MINLEN:20
 > done
 ~~~
 {: .bash}
 
-The new part in our `for` loop is the line:
+There are two new parts in our `for` loop. First is the line:
+
+~~~
+$ for infile in `ls untrimmed_fastq`
+~~~
+{: .bash}
+
+And second is the line:
 
 ~~~
 > outfile="${infile}"_trim.fastq
@@ -219,7 +241,8 @@ The new part in our `for` loop is the line:
 {: .bash}
 
 `infile` is the first variable in our loop and takes the value
-of each of the FASTQ files in our directory. `outfile` is the
+of each of the untrimmed FASTQ files. It does this by taking values from the command
+"ls untrimmed_fastq". This command must be surrounded by backticks. `outfile` is the
 second variable in our loop and is defined by adding `_trim.fastq` to
 the end of our input file name. Use `{}` to wrap the variable so that `_trim.fastq` will
 not be interpreted as part of the variable name. In addition, quoting the shell variables is
@@ -231,37 +254,16 @@ Trimmomatic to run for each of our six input files. Once it's done
 running, take a look at your directory contents.
 
 ~~~
-$ ls
+$ ls trimmed_fastq/
 ~~~
 {: .bash}
 
 ~~~
-SRR097977.fastq		    SRR098027.fastq_trim.fastq	SRR098283.fastq
-SRR097977.fastq_trim.fastq  SRR098028.fastq		SRR098283.fastq_trim.fastq
-SRR098026.fastq		    SRR098028.fastq_trim.fastq	SRR098283.fastq_trim.fastq_trim.fastq
-SRR098026.fastq_trim.fastq  SRR098281.fastq
-SRR098027.fastq		    SRR098281.fastq_trim.fastq
+SRR097977.fastq_trim.fastq  SRR098027.fastq_trim.fastq  SRR098281.fastq_trim.fastq
+SRR098026.fastq_trim.fastq  SRR098028.fastq_trim.fastq  SRR098283.fastq_trim.fastq
 ~~~
 {: .output}
 
-If you look very closely, you'll see that you have three files for the
-`SRR098283` sample. This is because we already had the `SRR098283.fastq_trim.fastq` file in our directory when we started
-our `for` loop (because we had run Trimmomatic on just that one file already).
-Our `for` loop included this file in our list of `.fastq` files and
-created a new output file named `SRR098283.fastq_trim.fastq_trim.fastq`, which is the result of
-running Trimmomatic on our already trimmed file. `SRR098283.fastq_trim.fastq` and `SRR098283.fastq_trim.fastq_trim.fastq` should be identical. If you look at your Trimmomatic output in the terminal window, you will see:
-
-~~~
-TrimmomaticSE: Started with arguments: SRR098283.fastq_trim.fastq SRR098283.fastq_trim.fastq_trim.fastq SLIDINGWINDOW:4:20 MINLEN:20
-Automatically using 2 threads
-Quality encoding detected as phred33
-Input Reads: 17030985 Surviving: 17030985 (100.00%) Dropped: 0 (0.00%)
-TrimmomaticSE: Completed successfully
-~~~
-{: .output}
-
-This shows that when we re-trimmed our trimmed file, no new reads were
-dropped. This is a good thing!
 
 > ## Exercise
 > Earlier we looked at the first read in our `SRR098026.fastq` file and
@@ -285,7 +287,7 @@ dropped. This is a good thing!
 >
 >> ## Solution
 >> ~~~
->> $ head -n4 SRR098026.fastq_trim.fastq
+>> $ head -n4 trimmed_fastq/SRR098026.fastq_trim.fastq
 >> ~~~
 >> {: .bash}
 >>
@@ -312,26 +314,8 @@ dropped. This is a good thing!
 {: .challenge}
 
 We've now completed the trimming and filtering steps of our quality
-control process! Before we move on, let's move our trimmed FASTQ files
-to a new subdirectory within our `data/` directory. We can also remove
-our extra, double-trimmed file for the `SRR098283` sample.
+control process! 
 
-~~~
-$ cd ~/dc_workshop/data/untrimmed_fastq
-$ mkdir ../trimmed_fastq
-$ rm SRR098283.fastq_trim.fastq_trim.fastq
-$ mv *_trim* ../trimmed_fastq
-$ cd ../trimmed_fastq
-$ ls
-~~~
-{: .bash}
-
-~~~
-SRR097977.fastq_trim.fastq  SRR098028.fastq_trim.fastq
-SRR098026.fastq_trim.fastq  SRR098281.fastq_trim.fastq
-SRR098027.fastq_trim.fastq  SRR098283.fastq_trim.fastq
-~~~
-{: .output}
 
 > ## Bonus Exercise (Advanced)
 >
@@ -343,24 +327,25 @@ SRR098027.fastq_trim.fastq  SRR098283.fastq_trim.fastq
 >
 >> ## Solution
 >>
->> In your AWS terminal window do:
+>> In your Biocluster terminal window do:
 >>
 >> ~~~
->> $ ~/FastQC/fastqc ~/dc_workshop/data/trimmed_fastq
+>> $ module load FastQC
+>> $ mkdir ~/dc_workshop/results/fastqc_trimmed_reads
+>> $ fastqc -o ~/dc_workshop/results/fastqc_trimmed_reads ~/dc_workshop/data/trimmed_fastq/*.fastq
 >> ~~~
 >> {: .bash}
 >>
->> In a new tab in your terminal do:
+>> In a new tab in your local computer terminal do:
 >>
 >> ~~~
 >> $ mkdir ~/Desktop/fastqc_html/trimmed
->> $ scp dcuser@ec2-34-203-203-131.compute-1.amazonaws.com:~/dc_workshop/data/trimmed_fastq/*.html ~/Desktop/fastqc_html/trimmed
+>> $ scp hpcbio##@biologin.igb.illinois.edu:~/dc_workshop/results/fastqc_trimmed_reads/*.html ~/Desktop/fastqc_html/trimmed
 >> $ open ~/Desktop/fastqc_html/trimmed/*.html
 >> ~~~
 >> {: .bash}
 >>
->> Remember to replace everything between the `@` and `:` in your scp
->> command with your AWS instance number.
+>> Remember to replace hpcbio## with your own temporary username.
 >>
 >> Before trimming, one of the sequences gave a warning and another
 >> failed the per base sequence quality test. After filtering, all
