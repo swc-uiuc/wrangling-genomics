@@ -279,23 +279,25 @@ We have now generated a file with coverage information for every base. To identi
 Identify SNPs using bcftools:
 
 ~~~
-$ bcftools view -bvcg results/bcf/SRR097977_raw.bcf > results/bcf/SRR097977_variants.bcf
+$ module load BCFtools/1.5-IGB-gcc-4.9.4
+$ bcftools call -cv --ploidy 1 -Ob -o results/bcf/SRR097977_variants.bcf results/bcf/SRR097977_raw.bcf 
 ~~~
 {: .bash}
 
-~~~
-[bcfview] 100000 sites processed.
-[afs] 0:99941.647 1:28.786 2:29.568
-[afs] 0:56680.981 1:14.316 2:18.702
-~~~
-{: .output}
+Above we used several basic parameters, but it's always a good idea to look through all of the options in a 
+program before running. There are two variant calling models available in BCFtools, and we are using the `-c` 
+or consensus model which assumes biallelic calling rather multi-allelic calling. Since we have a haploid 
+genome we shouldn't have to worry about allellic variants at all, so we're sticking with the simpler model.
+We also specify that we have a haploid genome with the option `--ploidy 1`. `-v` specifies that we'd only
+like to have variants reported. `-Ob` specifies that we want the output to be in bcf format, and the name of 
+our output file is provided after `-o`. 
 
 ### Step 3: Filter and report the SNP variants in variant calling format (VCF)
 
 Filter the SNPs for the final output in VCF format, using `vcfutils.pl`:
 
 ~~~
-$ bcftools view results/bcf/SRR097977_variants.bcf \ | /usr/share/samtools/vcfutils.pl varFilter - > results/vcf/SRR097977_final_variants.vcf
+$ bcftools view results/bcf/SRR097977_variants.bcf | vcfutils.pl varFilter - > results/vcf/SRR097977_final_variants.vcf
 ~~~
 {: .bash}
 
@@ -314,27 +316,27 @@ created, the version of bcftools that was used, the command line parameters used
 some additional information:
 
 ~~~
-##fileformat=VCFv4.1
-##samtoolsVersion=0.1.19-96b5f2294a
+##fileformat=VCFv4.2
+##FILTER=<ID=PASS,Description="All filters passed">
+##samtoolsVersion=1.5+htslib-1.5
+##samtoolsCommand=samtools mpileup -g -f data/ref_genome/ecoli_rel606.fasta results/bam/SRR097977.aligned.so
+rted.bam
 ##reference=file://data/ref_genome/ecoli_rel606.fasta
 ##contig=<ID=NC_012967.1,length=4629812>
+##ALT=<ID=*,Description="Represents allele(s) other than observed.">
+##INFO=<ID=INDEL,Number=0,Type=Flag,Description="Indicates that the variant is an INDEL.">
+##INFO=<ID=IDV,Number=1,Type=Integer,Description="Maximum number of reads supporting an indel">
+##INFO=<ID=IMF,Number=1,Type=Float,Description="Maximum fraction of reads supporting an indel">
 ##INFO=<ID=DP,Number=1,Type=Integer,Description="Raw read depth">
-##INFO=<ID=DP4,Number=4,Type=Integer,Description="# high-quality ref-forward bases, ref-reverse, alt-forward and alt-reverse bases">
-##INFO=<ID=MQ,Number=1,Type=Integer,Description="Root-mean-square mapping quality of covering reads">
-##INFO=<ID=FQ,Number=1,Type=Float,Description="Phred probability of all samples being the same">
-##INFO=<ID=AF1,Number=1,Type=Float,Description="Max-likelihood estimate of the first ALT allele frequency (assuming HWE)">
-##INFO=<ID=AC1,Number=1,Type=Float,Description="Max-likelihood estimate of the first ALT allele count (no HWE assumption)">
 .
 .
 .
 .
-##FORMAT=<ID=GT,Number=1,Type=String,Description="Genotype">
-##FORMAT=<ID=GQ,Number=1,Type=Integer,Description="Genotype Quality">
-##FORMAT=<ID=GL,Number=3,Type=Float,Description="Likelihoods for RR,RA,AA genotypes (R=ref,A=alt)">
-##FORMAT=<ID=DP,Number=1,Type=Integer,Description="# high-quality bases">
-##FORMAT=<ID=DV,Number=1,Type=Integer,Description="# high-quality non-reference bases">
-##FORMAT=<ID=SP,Number=1,Type=Integer,Description="Phred-scaled strand bias P-value">
-##FORMAT=<ID=PL,Number=G,Type=Integer,Description="List of Phred-scaled genotype likelihoods">
+##INFO=<ID=DP4,Number=4,Type=Integer,Description="Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases">
+##bcftools_callVersion=1.5+htslib-1.5
+##bcftools_callCommand=call --ploidy 1 -cv -Ob -o results/bcf/SRR097977_variants.bcf results/bcf/SRR097977_raw.bcf; Date=Tue Feb 20 13:30:53 2018
+##bcftools_viewVersion=1.5+htslib-1.5
+##bcftools_viewCommand=view results/bcf/SRR097977_variants.bcf; Date=Tue Feb 20 13:43:03 2018
 ~~~
 {: .output}
 
@@ -342,14 +344,13 @@ Followed by information on each of the variations observed:
 
 ~~~
 #CHROM  POS     ID      REF     ALT     QUAL    FILTER  INFO    FORMAT  results/bam/SRR097977.aligned.sorted.bam
-NC_012967.1     9972    .       T       G       222     .       DP=28;VDB=8.911920e-02;AF1=1;AC1=2;DP4=0,0,19,7;MQ=36;FQ=-105   GT:
-PL:GQ        1/1:255,78,0:99
-NC_012967.1     10563   .       G       A       222     .       DP=27;VDB=6.399241e-02;AF1=1;AC1=2;DP4=0,0,8,18;MQ=36;FQ=-105   GT:PL:GQ        1/1:255,78,0:99
-NC_012967.1     81158   .       A       C       222     .       DP=37;VDB=2.579489e-02;AF1=1;AC1=2;DP4=0,0,15,21;MQ=37;FQ=-135  GT:PL:GQ        1/1:255,108,0:99
-NC_012967.1     216480  .       C       T       222     .       DP=39;VDB=2.356774e-01;AF1=1;AC1=2;DP4=0,0,19,17;MQ=36;FQ=-135  GT:PL:GQ        1/1:255,108,0:99
-NC_012967.1     247796  .       T       C       221     .       DP=18;VDB=1.887634e-01;AF1=1;AC1=2;DP4=0,0,7,11;MQ=35;FQ=-81    GT:PL:GQ        1/1:254,54,0:99
-NC_012967.1     281923  .       G       T       222     .       DP=27;VDB=9.694360e-02;AF1=1;AC1=2;DP4=0,0,8,18;MQ=37;FQ=-105   GT:PL:GQ        1/1:255,78,0:99
-NC_012967.1     295604  .       T       G       4.77    .       DP=15;VDB=5.094834e-02;RPB=1.240303e+00;AF1=0.4999;AC1=1;DP4=2,9,4,0;MQ=36;FQ=6.99;PV4=0.011,0.084,0.0043,0.14  GT:PL:GQ        0/1:33,0,171:33
+NC_012967.1     9972    .       T       G       66.0052 .       DP=3;VDB=0.220755;SGB=-0.511536;MQSB=1;MQ0F=0;AF1=1;AC1=1;DP4=0,0,1,2;MQ=37;FQ=-999     GT:PL   1:96,0
+NC_012967.1     10563   .       G       A       24.0219 .       DP=2;VDB=0.36;SGB=-0.453602;MQ0F=0;AF1=1;AC1=1;DP4=0,0,0,2;MQ=37;FQ=-999        GT:PL   1:54,0
+NC_012967.1     81158   .       A       C       148.006 .       DP=8;VDB=0.250641;SGB=-0.636426;MQSB=1.01283;MQ0F=0;AF1=1;AC1=1;DP4=0,0,4,3;MQ=37;FQ=-999       GT:PL   1:178,0
+NC_012967.1     216480  .       C       T       62.0051 .       DP=4;VDB=0.235765;SGB=-0.511536;MQSB=1;MQ0F=0;AF1=1;AC1=1;DP4=0,0,1,2;MQ=37;FQ=-999     GT:PL   1:92,0
+NC_012967.1     247796  .       T       C       58.0051 .       DP=3;VDB=0.102722;SGB=-0.511536;MQSB=1;MQ0F=0;AF1=1;AC1=1;DP4=0,0,1,2;MQ=33;FQ=-999     GT:PL   1:88,0
+NC_012967.1     281923  .       G       T       38.0055 .       DP=2;VDB=0.06;SGB=-0.453602;MQSB=1;MQ0F=0;AF1=1;AC1=1;DP4=0,0,1,1;MQ=37;FQ=-999 GT:PL   1:68,0
+NC
 ~~~
 {: .output}
 
@@ -404,21 +405,21 @@ to learn more about VCF file format.
 >> 
 >> ~~~ 
 >> POS     QUAL
->> 9972    222
->> 10563   222
->> 81158   222
->> 216480  222
->> 247796  221
->> 281923  222
+>> 9972    66.0052
+>> 10563   24.0219
+>> 81158   148.006
+>> 216480  62.0051
+>> 247796  58.0051
+>> 281923  38.0055
 >> .
 >> .
 >> .
->> 1004106 7.8
->> 1019082 3.01
+>> 4433347	54.005
+>> 4616538	56.0051
 >> ~~~
 >> {: .output}
 >>
->> Position 1019082 has a score of 3.01.
+>> Position 1375411 has a score of 3.01.
 > {: .solution}
 {: .challenge}
 
@@ -504,19 +505,17 @@ $ cd ~/Desktop/files_for_igv
 ~~~
 {: .bash}
 
-Now we will transfer our files to that new directory. Remember to replace the text between the `@` and the `:` 
-with your AWS instance number. The commands to `scp` always go in the terminal window that is connected to your
-local computer (not your AWS instance).
+Now we will transfer our files to that new directory. Remember to replace `hpcbio##` with your temporary username. The commands to `scp` always go in the terminal window that is connected to your
+local computer (not your Biocluster instance).
 
 ~~~
-$ scp dcuser@ec2-34-203-203-131.compute-1.amazonaws.com:~/dc_workshop/results/bam/SRR097977.aligned.sorted.bam ~/Desktop/files_for_igv
-$ scp dcuser@ec2-34-203-203-131.compute-1.amazonaws.com:~/dc_workshop/results/bam/SRR097977.aligned.sorted.bam.bai ~/Desktop/files_for_igv
-$ scp dcuser@ec2-34-203-203-131.compute-1.amazonaws.com:~/dc_workshop/data/ref_genome/ecoli_rel606.fasta ~/Desktop/files_for_igv
-$ scp dcuser@ec2-34-203-203-131.compute-1.amazonaws.com:~/dc_workshop/results/vcf/SRR097977_final_variants.vcf ~/Desktop/files_for_igv
+$ scp hpcbio##@biologin.igb.illinois.edu:~/dc_workshop/results/bam/SRR097977.aligned.sorted.bam* ~/Desktop/files_for_igv
+$ scp hpcbio##@biologin.igb.illinois.edu:~/dc_workshop/data/ref_genome/ecoli_rel606.fasta ~/Desktop/files_for_igv
+$ scp hpcbio##@biologin.igb.illinois.edu:~/dc_workshop/results/vcf/SRR097977_final_variants.vcf ~/Desktop/files_for_igv
 ~~~
 {: .bash}
 
-You will need to type the password for your AWS instance each time you call `scp`. 
+You will need to type in your Biocluster password each time you call `scp`. 
 
 Next we need to open the IGV software. If you haven't done so already, you can download IGV from the [Broad Institute's software page](https://www.broadinstitute.org/software/igv/download), double-click the `.zip` file
 to unzip it, and then drag the program into your Applications folder. 
@@ -530,7 +529,7 @@ Your IGV browser should look like the screenshot below:
 
 ![IGV](../img/igv-screenshot.png)
 
-There should be two tracks: one coresponding to our BAM file and the other for our VCF file. 
+There should be two tracks: one corresponding to our BAM file and the other for our VCF file. 
 
 In the **VCF track**, each bar across the top of the plot shows the allele fraction for a single locus. The second bar shows
 the genotypes for each locus in each *sample*. We only have one sample called here so we only see a single line. Dark blue = 
