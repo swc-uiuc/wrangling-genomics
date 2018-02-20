@@ -53,10 +53,10 @@ $ for filename in *.zip
 And here's the one you wrote for running Trimmomatic on all of our `.fastq` sample files.
 
 ~~~
-$ for infile in *.fastq
+$ for infile in `ls untrimmed_fastq`
 > do
-> outfile=${infile}_trim.fastq
-> java -jar ~/Trimmomatic-0.32/trimmomatic-0.32.jar SE $infile $outfile SLIDINGWINDOW:4:20 MINLEN:20
+> outfile="${infile}"_trim.fastq
+> java -jar $EBROOTTRIMMOMATIC/trimmomatic-0.36.jar SE "untrimmed_fastq/${infile}" "trimmed_fastq/${outfile}" SLIDINGWINDOW:4:20 MINLEN:20
 > done
 ~~~
 {: .bash}
@@ -96,19 +96,10 @@ $ nano read_qc.sh
 
 Enter the following pieces of code into your shell script (not into your terminal prompt).
 
-Our first line will move us into the `untrimmed_fastq/` directory when we run our script.
+Our first line will move us into the `data/` directory when we run our script.
 
 ~~~
-cd ~/dc_workshop/data/untrimmed_fastq/
-~~~
-{: .output}
-
-These next two lines will give us a status message to tell us that we are currently running FastQC, then will run FastQC
-on all of the files in our current directory with a `.fastq` extension. 
-
-~~~
-echo "Running FastQC ..."
-~/FastQC/fastqc *.fastq
+cd ~/dc_workshop/data/
 ~~~
 {: .output}
 
@@ -122,15 +113,16 @@ mkdir -p ~/dc_workshop/results/fastqc_untrimmed_reads
 ~~~
 {: .output}
 
-Our next three lines first give us a status message to tell us we are saving the results from FastQC, then moves all of the files
-with a `.zip` or a `.html` extension to the directory we just created for storing our FastQC results. 
+These next three lines will give us a status message to tell us that we are currently running FastQC, then will run FastQC
+on all of the files in our current directory with a `.fastq` extension. 
 
 ~~~
-echo "Saving FastQC results..."
-mv *.zip ~/dc_workshop/results/fastqc_untrimmed_reads/
-mv *.html ~/dc_workshop/results/fastqc_untrimmed_reads/
+module load FastQC/0.11.5-IGB-gcc-4.9.4-Java-1.8.0_152
+echo "Running FastQC ..."
+fastqc -o ~/dc_workshop/results/fastqc_untrimmed_reads/ untrimmed_fastq/*.fastq
 ~~~
 {: .output}
+
 
 The next line moves us to the results directory where we've stored our output.
 
@@ -170,16 +162,13 @@ cat */summary.txt > ~/dc_workshop/docs/fastqc_summaries.txt
 Your full shell script should now look like this:
 
 ~~~
-cd ~/dc_workshop/data/untrimmed_fastq/
-
-echo "Running FastQC ..."
-~/FastQC/fastqc *.fastq
+cd ~/dc_workshop/data/
 
 mkdir -p ~/dc_workshop/results/fastqc_untrimmed_reads
 
-echo "Saving FastQC results..."
-mv *.zip ~/dc_workshop/results/fastqc_untrimmed_reads/
-mv *.html ~/dc_workshop/results/fastqc_untrimmed_reads/
+echo "Running FastQC ..."
+module load FastQC/0.11.5-IGB-gcc-4.9.4-Java-1.8.0_152
+fastqc -o  ~/dc_workshop/results/fastqc_untrimmed_reads/ untrimmed_fastq/*.fastq
 
 cd ~/dc_workshop/results/fastqc_untrimmed_reads/
 
@@ -290,10 +279,19 @@ genome=~/dc_workshop/data/ref_genome/ecoli_rel606.fasta
 > definition of your variable by typing into your script: echo $variable_name. 
 {: .callout}
 
-Next we index our reference genome for BWA.
+Next we make a directory for our BWA index, and then create an index our reference genome for BWA.
 
 ~~~
-bwa index $genome
+mkdir ~/dc_workshop/data/bwa_index
+module load BWA/0.7.15-IGB-gcc-4.9.4
+bwa index -p ~/dc_workshop/data/bwa_index/ecoli_rel606 $genome
+~~~
+{: .output}
+
+We will also create another varible for the BWA index we just made:
+
+~~~
+index=~/dc_workshop/data/bwa_index/ecoli_rel606
 ~~~
 {: .output}
 
@@ -342,21 +340,25 @@ for fq in ~/dc_workshop/data/trimmed_fastq_small/*.fastq
 >> {: .bash}
 >> 
 >> ~~~
+>> mkdir: cannot create directory ‘/home/a-m/hpcinstru02/dc_workshop/data/bwa_index’: File exists
+>> [bwa_index] Pack FASTA... ^C
+>> [hpcinstru02@compute-1-0 scripts]$ bash run_variant_calling.sh 
+>> mkdir: cannot create directory ‘/home/a-m/hpcinstru02/dc_workshop/data/bwa_index’: File exists
 >> [bwa_index] Pack FASTA... 0.04 sec
 >> [bwa_index] Construct BWT for the packed sequence...
->> [bwa_index] 1.10 seconds elapse.
->> [bwa_index] Update BWT... 0.03 sec
->> [bwa_index] Pack forward-only FASTA... 0.02 sec
->> [bwa_index] Construct SA from BWT and Occ... 0.64 sec
->> [main] Version: 0.7.5a-r405
->> [main] CMD: bwa index /home/dcuser/dc_workshop/data/ref_genome/ecoli_rel606.fasta
->> [main] Real time: 1.892 sec; CPU: 1.829 sec
->> working with file /home/dcuser/dc_workshop/data/trimmed_fastq_small/SRR097977.fastq_trim.fastq
->> working with file /home/dcuser/dc_workshop/data/trimmed_fastq_small/SRR098026.fastq_trim.fastq
->> working with file /home/dcuser/dc_workshop/data/trimmed_fastq_small/SRR098027.fastq_trim.fastq
->> working with file /home/dcuser/dc_workshop/data/trimmed_fastq_small/SRR098028.fastq_trim.fastq
->> working with file /home/dcuser/dc_workshop/data/trimmed_fastq_small/SRR098281.fastq_trim.fastq
->> working with file /home/dcuser/dc_workshop/data/trimmed_fastq_small/SRR098283.fastq_trim.fastq
+>> [bwa_index] 2.55 seconds elapse.
+>> [bwa_index] Update BWT... 0.02 sec
+>> [bwa_index] Pack forward-only FASTA... 0.04 sec
+>> [bwa_index] Construct SA from BWT and Occ... 0.59 sec
+>> [main] Version: 0.7.15-r1140
+>> [main] CMD: bwa index -p /home/a-m/hpcinstru02/dc_workshop/data/bwa_index/ecoli_rel606 /home/a-m/hpcinstru02/dc_workshop/data/ref_genome/ecoli_rel606.fasta
+>> [main] Real time: 23.783 sec; CPU: 3.243 sec
+>> working with file /home/a-m/hpcinstru02/dc_workshop/data/trimmed_fastq_small/SRR097977.fastq_trim.fastq
+>> working with file /home/a-m/hpcinstru02/dc_workshop/data/trimmed_fastq_small/SRR098026.fastq_trim.fastq
+>> working with file /home/a-m/hpcinstru02/dc_workshop/data/trimmed_fastq_small/SRR098027.fastq_trim.fastq
+>> working with file /home/a-m/hpcinstru02/dc_workshop/data/trimmed_fastq_small/SRR098028.fastq_trim.fastq
+>> working with file /home/a-m/hpcinstru02/dc_workshop/data/trimmed_fastq_small/SRR098281.fastq_trim.fastq
+>> working with file /home/a-m/hpcinstru02/dc_workshop/data/trimmed_fastq_small/SRR098283.fastq_trim.fastq
 >> ~~~
 >> {: .output}
 >> 
@@ -381,24 +383,23 @@ to a new variable called `base` variable. Add `done` again at the end so we can 
 Now if you save and run your script, the final lines of your output should look like this: 
 
 ~~~
-working with file /home/dcuser/dc_workshop/data/trimmed_fastq_small/SRR097977.fastq_trim.fastq
+working with file /home/a-m/hpcinstru02/dc_workshop/data/trimmed_fastq_small/SRR097977.fastq_trim.fastq
 base name is SRR097977
-working with file /home/dcuser/dc_workshop/data/trimmed_fastq_small/SRR098026.fastq_trim.fastq
+working with file /home/a-m/hpcinstru02/dc_workshop/data/trimmed_fastq_small/SRR098026.fastq_trim.fastq
 base name is SRR098026
-working with file /home/dcuser/dc_workshop/data/trimmed_fastq_small/SRR098027.fastq_trim.fastq
+working with file /home/a-m/hpcinstru02/dc_workshop/data/trimmed_fastq_small/SRR098027.fastq_trim.fastq
 base name is SRR098027
-working with file /home/dcuser/dc_workshop/data/trimmed_fastq_small/SRR098028.fastq_trim.fastq
+working with file /home/a-m/hpcinstru02/dc_workshop/data/trimmed_fastq_small/SRR098028.fastq_trim.fastq
 base name is SRR098028
-working with file /home/dcuser/dc_workshop/data/trimmed_fastq_small/SRR098281.fastq_trim.fastq
+working with file /home/a-m/hpcinstru02/dc_workshop/data/trimmed_fastq_small/SRR098281.fastq_trim.fastq
 base name is SRR098281
-working with file /home/dcuser/dc_workshop/data/trimmed_fastq_small/SRR098283.fastq_trim.fastq
+working with file /home/a-m/hpcinstru02/dc_workshop/data/trimmed_fastq_small/SRR098283.fastq_trim.fastq
 base name is SRR098283
 ~~~
 {: .output}
 
 For each file, you see two statements printed to the terminal window. This is because we have two `echo` statements. The first
-tells you which file the loop is currently working with. The second tells you the base name of the file. This base name is going
-to be used to create our output files.
+tells you which file the loop is currently working with. The second tells you the base name of the file. This base name is going to be used to create our output files.
 
 Next we will create variables to store the names of our output files. This will make your script easier
 to read because you won't need to type out the full name of each of the files. We're using the `base` variable that we just
@@ -423,20 +424,21 @@ your script and add the following lines.
 1) align the reads to the reference genome and output a `.sai` file:
 
 ~~~
-    bwa aln $genome $fq > $sai
+    bwa aln $index $fq > $sai
 ~~~
 {: .output}
 
 2) convert the output to SAM format:
 
 ~~~
-    bwa samse $genome $sai $fq > $sam
+    bwa samse $index $sai $fq > $sam
 ~~~
 {: .output}
 
 3) convert the SAM file to BAM format:
 
 ~~~
+    module load SAMtools/1.5-IGB-gcc-4.9.4
     samtools view -S -b $sam > $bam
 ~~~
 {: .output}
@@ -444,7 +446,7 @@ your script and add the following lines.
 4) sort the BAM file:
 
 ~~~
-    samtools sort -f $bam $sorted_bam
+    samtools sort -o $sorted_bam $bam
 ~~~
 {: .output}
 
@@ -466,14 +468,15 @@ read coverage
 7) call SNPs with bcftools:
 
 ~~~
-    bcftools view -bvcg $raw_bcf > $variants
+    module load BCFtools/1.5-IGB-gcc-4.9.4
+    bcftools call -cv --ploidy 1 -Ob -o $variants $raw_bcf 
 ~~~
 {: .output}
 
 8) filter the SNPs for the final output:
 
 ~~~
-    bcftools view $variants | /usr/share/samtools/vcfutils.pl varFilter - > $final_variants
+    bcftools view $variants | vcfutils.pl varFilter - > $final_variants
     done
 ~~~
 {: .output}
@@ -487,34 +490,39 @@ cd ~/dc_workshop/results
 
 genome=~/dc_workshop/data/ref_genome/ecoli_rel606.fasta
 
-bwa index $genome
+mkdir ~/dc_workshop/data/bwa_index
+module load BWA/0.7.15-IGB-gcc-4.9.4
+bwa index -p ~/dc_workshop/data/bwa_index/ecoli_rel606 $genome
+index=~/dc_workshop/data/bwa_index/ecoli_rel606
 
 mkdir -p sai sam bam bcf vcf
 
 for fq in ~/dc_workshop/data/trimmed_fastq_small/*.fastq
     do
     echo "working with file $fq"
-
     base=$(basename $fq .fastq_trim.fastq)
     echo "base name is $base"
-
-    fq=~/dc_workshop/data/trimmed_fastq_small/$base.fastq_trim.fastq
+    fq=~/dc_workshop/data/trimmed_fastq_small/${base}.fastq_trim.fastq
     sai=~/dc_workshop/results/sai/${base}_aligned.sai
     sam=~/dc_workshop/results/sam/${base}_aligned.sam
     bam=~/dc_workshop/results/bam/${base}_aligned.bam
     sorted_bam=~/dc_workshop/results/bam/${base}_aligned_sorted.bam
     raw_bcf=~/dc_workshop/results/bcf/${base}_raw.bcf
     variants=~/dc_workshop/results/bcf/${base}_variants.bcf
-    final_variants=~/dc_workshop/results/vcf/${base}_final_variants.vcf 
+    final_variants=~/dc_workshop/results/vcf/${base}_final_variants.vcf
 
-    bwa aln $genome $fq > $sai
-    bwa samse $genome $sai $fq > $sam
+    bwa aln $index $fq > $sai
+    bwa samse $index $sai $fq > $sam
+    
+    module load SAMtools/1.5-IGB-gcc-4.9.4
     samtools view -S -b $sam > $bam
-    samtools sort -f $bam $sorted_bam
+    samtools sort -o $sorted_bam $bam
     samtools index $sorted_bam
     samtools mpileup -g -f $genome $sorted_bam > $raw_bcf
-    bcftools view -bvcg $raw_bcf > $variants
-    bcftools view $variants | /usr/share/samtools/vcfutils.pl varFilter - > $final_variants
+
+    module load BCFtools/1.5-IGB-gcc-4.9.4
+    bcftools call -cv --ploidy 1 -Ob -o $variants $raw_bcf
+    bcftools view $variants | vcfutils.pl varFilter - > $final_variants
     done
 ~~~
 {: .output}
