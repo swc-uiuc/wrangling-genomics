@@ -30,13 +30,11 @@ sequences against a large reference genome. The alignment process consists of tw
 
 # Setting up
 
-First we will link in the reference genome data into our `data/` directory. `ln` stands for link. Hardlinks typically only work for files (not directories), and they basically act as another name for the same data that is stored on your harddrive. However here, we use the `-s` flag, which stands for a symbolic link (symlink). A symlink creates a file that stores the path of another file. This allows you to access the information in that file with a new path without moving the data on your hard drive.  
-
-Although copying our data would accomplish something similar, this way, the data only lives in one place on our hard drive, thereby taking up less space. This becomes important when your files become very large. Symbolic links allow you to have the data in one location on your hard drive, but call it from many. 
+First we will link in the reference genome data into our `data/` directory, using a symbolic link.
 
 ~~~
 $ cd ~/dc_workshop
-$ ln -s ~/.dc_sampledata_lite/ref_genome/ data/
+$ ln -s /home/classroom/hpcbio/DC-genomics-2018/.dc_sampledata_lite/ref_genome/ data/
 ~~~
 {: .bash}
 
@@ -44,7 +42,7 @@ We will also link in a set of trimmed FASTQ files to work with. These are small 
 and will enable us to run our variant calling workflow quite quickly. 
 
 ~~~
-$ ln -s ~/.dc_sampledata_lite/trimmed_fastq_small/ data/
+$ ln -s /home/classroom/hpcbio/DC-genomics-2018/.dc_sampledata_lite/trimmed_fastq_small/ data/
 ~~~
 {: .bash}
 
@@ -80,8 +78,16 @@ helps speed up our alignment.
 > genome or you are using a different tool for alignment.
 {: .callout}
 
+Make sure to load the appropriate module first:
 ~~~
-$ bwa index data/ref_genome/ecoli_rel606.fasta
+$ module avail bwa  #Optional step: Displays all the modules with 'bwa' in its name
+$ module load BWA/0.7.15-IGB-gcc-4.9.4
+~~~
+{: .bash}
+
+~~~
+$ mkdir data/bwa_index
+$ bwa index -p data/bwa_index/ecoli_rel606 data/ref_genome/ecoli_rel606.fasta
 ~~~
 {: .bash}
 
@@ -90,13 +96,13 @@ While the index is created, you will see output something like this:
 ~~~
 [bwa_index] Pack FASTA... 0.04 sec
 [bwa_index] Construct BWT for the packed sequence...
-[bwa_index] 1.05 seconds elapse.
+[bwa_index] 2.52 seconds elapse.
 [bwa_index] Update BWT... 0.03 sec
 [bwa_index] Pack forward-only FASTA... 0.02 sec
-[bwa_index] Construct SA from BWT and Occ... 0.54 sec
-[main] Version: 0.7.5a-r405
-[main] CMD: bwa index data/ref_genome/ecoli_rel606.fasta
-[main] Real time: 1.736 sec; CPU: 1.688 sec
+[bwa_index] Construct SA from BWT and Occ... 0.59 sec
+[main] Version: 0.7.15-r1140
+[main] CMD: bwa index -p data/bwa_index/ecoli_rel606 data/ref_genome/ecoli_rel606.fasta
+[main] Real time: 18.380 sec; CPU: 3.202 sec
 ~~~
 {: .output}
 
@@ -108,7 +114,7 @@ reads up to 100bp, while the other two are for sequences ranging from 70bp to 1M
 as long-read support and split alignment, but BWA-MEM, which is the latest, is generally recommended for high-quality queries as it 
 is faster and more accurate.
 
-Since we are working with short reads we will be using BWA-backtrack. The general usage for BWA-backtrack is: 
+Since we are working with short reads (36nt) we will be using BWA-backtrack. The general usage for BWA-backtrack is: 
 
 ~~~
 $ bwa aln ref_genome.fasta input_file.fastq > output_file.sai
@@ -126,7 +132,7 @@ samples in our dataset (`SRR098283.fastq`). Later, we'll be
 iterating this whole process on all of our sample files.
 
 ~~~
-$ bwa aln data/ref_genome/ecoli_rel606.fasta data/trimmed_fastq_small/SRR097977.fastq_trim.fastq > results/sai/SRR097977.aligned.sai
+$ bwa aln data/bwa_index/ecoli_rel606 data/trimmed_fastq_small/SRR097977.fastq_trim.fastq > results/sai/SRR097977.aligned.sai
 ~~~
 {: .bash}
 
@@ -189,7 +195,7 @@ $ bwa samse ref_genome.fasta input_file.sai input_file.fastq > output_file.sam
 The code in our case will look like: 
 
 ~~~
-$ bwa samse data/ref_genome/ecoli_rel606.fasta \
+$ bwa samse data/bwa_index/ecoli_rel606 \
         results/sai/SRR097977.aligned.sai \
         data/trimmed_fastq_small/SRR097977.fastq_trim.fastq > \
         results/sam/SRR097977.aligned.sam
@@ -214,35 +220,28 @@ Your output will start out something like this:
 >
 {: .callout}
 
-Next we convert the SAM file to BAM format for use by downstream tools. We use the `samtools` program with the `view` command and tell this command that the input is in SAM format (`-S`) and to output BAM format (`-b`): 
+Next we convert the SAM file to BAM format for use by downstream tools. We use the `samtools` program with the `view` command and tell this command that the input is in SAM format (`-S`) and to output BAM format (`-b`). Remember to load the samtools module first!
 
 ~~~
+$ module load SAMtools/1.5-IGB-gcc-4.9.4
 $ samtools view -S -b results/sam/SRR097977.aligned.sam > results/bam/SRR097977.aligned.bam
 ~~~
 {: .bash}
 
-~~~
-[samopen] SAM header is present: 1 sequences.
-~~~
-{: .output}
-
 
 ### Sort BAM file by coordinates
 
-Next we sort the BAM file using the `sort` command from `samtools`. Note that as second parameter, we give the filename of the desired output file *without* the `.bam` part:
+Next we sort the BAM file using the `sort` command from `samtools`. Note that we need to specify where and what to call 
+our output file with the `-o` option. 
 
 ~~~
-$ samtools sort results/bam/SRR097977.aligned.bam results/bam/SRR097977.aligned.sorted
+$ samtools sort -o results/bam/SRR097977.aligned.sorted.bam results/bam/SRR097977.aligned.bam 
 ~~~
 {: .bash}
 
-~~~
-[bam_sort_core] merging from 2 files...
-~~~
-{: .output}
 
 > ## More Than One Way to . . . sort a SAM/BAM File
-> SAM/BAM files can be sorted in multiple ways, e.g. by location of alignment on the chromosome, by read name, etc. It is important
+> By default samtools will sort by coordinates, but SAM/BAM files can be sorted in multiple ways, e.g. by location of alignment on the chromosome, by read name, etc. It is important
 > to be aware that different alignment tools will output differently sorted SAM/BAM, and different downstream tools require 
 > differently sorted alignment files as input.*
 {: .callout}
@@ -250,10 +249,9 @@ $ samtools sort results/bam/SRR097977.aligned.bam results/bam/SRR097977.aligned.
 ## Variant calling
 
 A variant call is a conclusion that there is a nucleotide difference vs. some reference at a given position in an individual genome
-or transcriptome, often referred to as a Single Nucleotide Polymorphism (SNP). The call is usually accompanied by an estimate of 
+or transcriptome, often referred to as a Single Nucleotide Variant (SNV). The call is usually accompanied by an estimate of 
 variant frequency and some measure of confidence. Similar to other steps in this workflow, there are number of tools available for 
-variant calling. In this workshop we will be using `bcftools`, but there are a few things we need to do before actually calling the 
-variants.
+variant calling. In this workshop we will be using `bcftools`, but there are a few things we need to do before actually calling the variants.
 
 ![workflow](../img/variant_calling_workflow.png)
 
@@ -269,8 +267,8 @@ $ samtools mpileup -g -f data/ref_genome/ecoli_rel606.fasta \
 {: .bash}
 
 ~~~
-[fai_load] build FASTA index.
 [mpileup] 1 samples in 1 input files
+<mpileup> Set max per-file depth to 8000
 ~~~
 {: .output}
 
