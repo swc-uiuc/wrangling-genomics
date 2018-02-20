@@ -34,11 +34,20 @@ filter poor quality reads and trim poor quality bases from our samples.
 Trimmomatic is a program written in the Java programming language.
 You don't need to learn Java to use Trimmomatic (FastQC is also
 written in Java), but the fact that it's a Java program helps
-explain the syntax that is used to run Trimmomatic. The basic
-command to run Trimmomatic starts like this:
+explain the syntax that is used to run Trimmomatic. First find the appropriate module,
+and then load it.
 
 ~~~
-$ java -jar trimmomatic-0.32.jar
+$ module avail trimmomatic
+$ module load Trimmomatic/0.36-Java-1.8.0_121
+~~~
+{: .bash}
+
+Note that a message from Biocluster comes up that explains how to use
+Trimmomatic. The basic command to run Trimmomatic starts like this:
+
+~~~
+$ java -jar $EBROOTTRIMMOMATIC/trimmomatic-0.36.jar
 ~~~
 {: .bash}
 
@@ -80,14 +89,14 @@ and options, see [the Trimmomatic manual](http://www.usadellab.org/cms/uploads/s
 We said above that a basic command for Trimmomatic looks like this:
 
 ~~~
-$ java -jar trimmomatic-0.32.jar SE
+$ java -jar $EBROOTTRIMMOMATIC/trimmomatic-0.36.jar SE
 ~~~
 {: .bash}
 
 However, a complete command for Trimmomatic will look something like this:
 
 ~~~
-$ java -jar trimmomatic-0.32.jar SE -threads 4 -phred64 SRR_1056.fastq SRR_1056_trimmed.fastq ILLUMINACLIP:SRR_adapters.fa SLIDINGWINDOW:4:20
+$ java -jar $EBROOTTRIMMOMATIC/trimmomatic-0.36.jar SE -threads 4 -phred64 SRR_1056.fastq SRR_1056_trimmed.fastq ILLUMINACLIP:SRR_adapters.fa SLIDINGWINDOW:4:20
 ~~~
 {: .bash}
 
@@ -105,10 +114,17 @@ In this example, we've told Trimmomatic:
 
 ## Running Trimmomatic
 
-Now we will run Trimmomatic on our data. To begin, navigate to your `untrimmed_fastq` data directory:
+Now we will run Trimmomatic on our data. To begin, navigate to your data directory:
 
 ~~~
-$ cd ~/dc_workshop/data/untrimmed_fastq
+$ cd ~/dc_workshop/data/
+~~~
+{: .bash}
+
+Lets also make a directory for our output to be written to.
+
+~~~
+$ mkdir trimmed_fastq
 ~~~
 {: .bash}
 
@@ -119,7 +135,7 @@ discard any reads that do not have at least 20 bases remaining after
 this trimming step.
 
 ~~~
-$ java -jar ~/Trimmomatic-0.32/trimmomatic-0.32.jar SE SRR098283.fastq SRR098283.fastq_trim.fastq SLIDINGWINDOW:4:20 MINLEN:20
+$ java -jar $EBROOTTRIMMOMATIC/trimmomatic-0.36.jar SE untrimmed_fastq/SRR098283.fastq trimmed_fastq/SRR098283.fastq_trim.fastq SLIDINGWINDOW:4:20 MINLEN:20
 ~~~
 {: .bash}
 
