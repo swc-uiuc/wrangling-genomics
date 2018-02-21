@@ -598,12 +598,12 @@ Let's do a few comparisons.
 > script on?
 >
 > Hint: You can find a copy of the full-sized trimmed 
-> FASTQ files in the `~/.dc_sampledata_lite/solutions/wrangling-solutions/trimmed_fastq` directory.
+> FASTQ files in the `/home/classroom/hpcbio/DC-genomics-2018/.dc_sampledata_lite/solutions/wrangling-solutions/trimmed_fastq` directory.
 > 
 > > ## Solution
 > > 
 > > ~~~
-> > $ ls -lh ~/.dc_sampledata_lite/solutions/wrangling-solutions/trimmed_fastq
+> > $ ls -lh /home/classroom/hpcbio/DC-genomics-2018/.dc_sampledata_lite/solutions/wrangling-solutions/trimmed_fastq
 > > ~~~
 > > {: .bash}
 > > 
@@ -648,7 +648,7 @@ variants are present in position 145?
 >> ## Solution
 >> 
 >> ~~~
->> $ samtools tview ~/.dc_sampledata_lite/solutions/wrangling-solutions/variant_calling/bam/SRR098281_aligned_sorted.bam ~/dc_workshop/data/ref_genome/ecoli_rel606.fasta
+>> $ samtools tview /home/classroom/hpcbio/DC-genomics-2018/.dc_sampledata_lite/solutions/wrangling-solutions/variant_calling/bam/SRR098281_aligned_sorted.bam ~/dc_workshop/data/ref_genome/ecoli_rel606.fasta
 >> ~~~
 >> {: .bash}
 >> 
@@ -661,7 +661,7 @@ variants are present in position 145?
 > 
 > If you have time after completing the previous two exercises, use `run_variant_calling.sh` to run the variant calling pipeline 
 > on the full-sized trimmed FASTQ files. You should have a copy of these already in `~/dc_workshop/data/trimmed_fastq` but if 
-> you dont, there is a copy in `~/.dc_sampledata_lite/solutions/wrangling-solutions/trimmed_fastq`.
+> you dont, there is a copy in `/home/classroom/hpcbio/DC-genomics-2018/.dc_sampledata_lite/solutions/wrangling-solutions/trimmed_fastq`.
 {: .challenge} 
 
 
