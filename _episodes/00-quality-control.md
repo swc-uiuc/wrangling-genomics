@@ -196,7 +196,9 @@ Here, we see positions within the read in which the boxes span a much wider rang
 
 We will be working with a set of sample data that is located in a hidden directory (`.dc_sampledata_lite`). First, we
 will create a symbolic link to some of these hidden files to the `data` directory your created at [the end of our
-last lesson](http://www.datacarpentry.org/shell-genomics/06-organization/).  
+last lesson](http://www.datacarpentry.org/shell-genomics/06-organization/). `ln` stands for link. Hardlinks typically only work for files (not directories), and they basically act as another name for the same data that is stored on your harddrive. However here, we use the `-s` flag, which stands for a symbolic link (symlink). A symlink creates a file that stores the path of another file. This allows you to access the information in that file with a new path without moving the data on your hard drive.
+
+Although copying our data would accomplish something similar, this way, the data only lives in one place on our hard drive, thereby taking up less space. This becomes important when your files become very large. Symbolic links allow you to have the data in one location on your hard drive, but call it from many.
 
 ~~~
 $ ln -s /home/classroom/hpcbio/DC-genomics-2018/.dc_sampledata_lite/untrimmed_fastq/ ~/dc_workshop/data/
