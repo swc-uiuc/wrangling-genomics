@@ -179,10 +179,8 @@ a very high quality sample:
 The x-axis displays the base position in the read, and the y-axis shows quality scores. In this
 example, the sample contains reads that are 40 bp long. For each position, there is a 
 box-and-whisker plot showing the distribution of quality scores for all reads at that position.
-The horizontal red line indicates the median quality score and the yellow box shows the 2nd to
-3rd quartile range. This means that 50% of reads have a quality score that falls within the
-range of the yellow box at that position. The whiskers show the range to the 1st and 4th 
-quartile.
+The horizontal red line indicates the median quality score and the yellow box shows the inter-quartile range (25%-75%). This means that 50% of reads have a quality score that falls within the
+range of the yellow box at that position. The whiskers show the range from the 10% and 90% points.
 
 For each position in this sample, the quality values do not drop much lower than 32. This 
 is a high quality score. The plot background is also color-coded to identify good (green),
