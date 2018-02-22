@@ -245,7 +245,6 @@ To run the FastQC program, we need to load the FASTQC module on Biocluster. Reme
 ~~~
 $ module load FastQC
 $ module list
-$ cd ../
 $ fastqc -o ./ untrimmed_fastq/*.fastq
 ~~~
 {: .bash}
