@@ -200,7 +200,7 @@ The output file is also a FASTQ file. It should be smaller than our
 input file because we've removed reads. We can confirm this:
 
 ~~~
-$ ls *_fastq/SRR098283* -lh
+$ ls -lh *_fastq/SRR098283* 
 ~~~
 {: .bash}
 
