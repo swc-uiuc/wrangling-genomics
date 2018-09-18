@@ -90,7 +90,7 @@ above, the quality score line is:
 The `#` character and each of the `!` characters represent the encoded quality for an 
 individual nucleotide. The numerical value assigned to each of these characters depends on the 
 sequencing platform that generated the reads. The sequencing machine used to generate our data 
-uses the standard Sanger quality PHRED score encoding, using by Illumina version 1.8 onwards.
+uses the standard Sanger quality PHRED score encoding, used by Illumina version 1.8 and onwards.
 Each character is assigned a quality score between 0 and 40 as shown in the chart below.
 
 ~~~
