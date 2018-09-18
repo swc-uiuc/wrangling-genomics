@@ -153,7 +153,7 @@ bad read.
 > Although we've used a particular quality encoding system to demonstrate interpretation of 
 > read quality, different sequencing machines use different encoding systems. This means that, 
 > depending on which sequencer you use to generate your data, a `#` may not be an indicator of 
-> a poor quality base call.
+> a poor quality base call. See this article for more details: https://en.wikipedia.org/wiki/FASTQ_format.
 
 > This mainly relates to older Solexa/Illumina data,
 > but it's essential that you know which sequencing platform was
@@ -168,8 +168,8 @@ FASTQ files. Rather, you'll be using a software program to assess read quality a
 filter out poor quality reads. We'll first use a program called [FastQC](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/) to visualize the quality of our reads. 
 Later in our workflow, we'll use another program to filter out poor quality reads. 
 
-FastQC has a number of features which can give you a  quick impression of any problems your
-data may have, so you can take these issues into consideration before moving forward with your
+FastQC has a number of features which can give you a quick impression of any problems your
+data may have, so that you can take these issues into consideration before moving forward with your
 analyses. Rather than looking at quality scores for each individual read, FastQC looks at
 quality collectively across all reads within a sample. The image below shows a FastQC-generated plot that indicates
 a very high quality sample:
