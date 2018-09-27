@@ -537,12 +537,13 @@ in order to make its purpose clearer to human readers.
 The shell itself doesn't care what the variable is called;
 if we wrote this loop as:
 
-
-> $ for x in *.zip
-> \> do
-> \> unzip $x
-> \> done
-
+~~~
+_$ for x in *.zip_
+_> do_
+> unzip $x
+> done
+~~~
+{: .output}
 
 or:
 
@@ -552,7 +553,7 @@ $ for temperature in *.zip
 > unzip $temperature
 > done
 ~~~
-{: .bash}
+{: .output}
 
 it would work exactly the same way.
 *Don't do this.*
