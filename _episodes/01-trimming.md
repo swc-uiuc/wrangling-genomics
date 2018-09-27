@@ -92,7 +92,7 @@ We said above that a basic command for Trimmomatic looks like this:
 
 However, a complete command for Trimmomatic will look something like this:
 
-**_$ java -jar $EBROOTTRIMMOMATIC/trimmomatic-0.36.jar SE -threads 4 -phred64 SRR_1056.fastq SRR_1056_trimmed.fastq ILLUMINACLIP:SRR_adapters.fa SLIDINGWINDOW:4:20_**
+**_$ java -jar $EBROOTTRIMMOMATIC/trimmomatic-0.36.jar SE -threads 3 -phred64 SRR_1056.fastq SRR_1056_trimmed.fastq ILLUMINACLIP:SRR_adapters.fa SLIDINGWINDOW:4:20_**
 
 
 In this example, we've told Trimmomatic:
@@ -100,7 +100,7 @@ In this example, we've told Trimmomatic:
 | code   | meaning |
 | ------- | ---------- |
 | `SE` | that it will be taking a single end file as input |
-| `-threads 4` | to use four computing threads to run (this will speed up our run) |
+| `-threads 3` | to use three computing threads to run (this will speed up our run) |
 | `-phred64` | that the input file uses phred-64 encoding for quality scores |
 | `SRR_1056.fastq` | the input file name |
 |  `SRR_1056_trimmed.fastq` | the output file to create |
@@ -223,7 +223,7 @@ $ for infile in `ls untrimmed_fastq`
 
 There are two new parts in our `for` loop. First is the line:
 
-**_$ for infile in `ls untrimmed_fastq`_**
+**_$ for infile in \`ls untrimmed_fastq\`_**
 
 And second is the line:
 
