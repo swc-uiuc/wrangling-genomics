@@ -39,17 +39,16 @@ and then load it.
 
 ~~~
 $ module avail trimmomatic
-$ module load Trimmomatic/0.36-Java-1.8.0_121
+$ module load Trimmomatic/0.38-Java-1.8.0_152
 ~~~
 {: .bash}
 
 Note that a message from Biocluster comes up that explains how to use
 Trimmomatic. The basic command to run Trimmomatic starts like this:
 
-~~~
-$ java -jar $EBROOTTRIMMOMATIC/trimmomatic-0.36.jar
-~~~
-{: .bash}
+
+**_$ java -jar $EBROOTTRIMMOMATIC/trimmomatic-0.38.jar_**
+
 
 `java` tells our computer that we're running a Java program. `-jar`
 is an option specifying that we're going to specify the location of
@@ -88,17 +87,13 @@ and options, see [the Trimmomatic manual](http://www.usadellab.org/cms/uploads/s
 
 We said above that a basic command for Trimmomatic looks like this:
 
-~~~
-$ java -jar $EBROOTTRIMMOMATIC/trimmomatic-0.36.jar SE
-~~~
-{: .bash}
+**_$ java -jar $EBROOTTRIMMOMATIC/trimmomatic-0.38.jar SE_**
+
 
 However, a complete command for Trimmomatic will look something like this:
 
-~~~
-$ java -jar $EBROOTTRIMMOMATIC/trimmomatic-0.36.jar SE -threads 4 -phred64 SRR_1056.fastq SRR_1056_trimmed.fastq ILLUMINACLIP:SRR_adapters.fa SLIDINGWINDOW:4:20
-~~~
-{: .bash}
+**_$ java -jar $EBROOTTRIMMOMATIC/trimmomatic-0.36.jar SE -threads 4 -phred64 SRR_1056.fastq SRR_1056_trimmed.fastq ILLUMINACLIP:SRR_adapters.fa SLIDINGWINDOW:4:20_**
+
 
 In this example, we've told Trimmomatic:
 
@@ -121,7 +116,7 @@ node while requesting more CPUs.
 
 ~~~
 $ exit  #Exits current compute node
-$ srun --pty -p classroom -n 4 bash
+$ srun --pty -p classroom -n 3 bash
 ~~~
 {: .bash}
 
@@ -129,7 +124,7 @@ Navigate to your data directory and reload the Trimmomatic module:
 
 ~~~
 $ cd ~/dc_workshop/data/
-$ module load Trimmomatic/0.36-Java-1.8.0_121
+$ module load Trimmomatic/0.38-Java-1.8.0_152
 ~~~
 {: .bash}
 
@@ -147,7 +142,7 @@ discard any reads that do not have at least 20 bases remaining after
 this trimming step.
 
 ~~~
-$ java -jar $EBROOTTRIMMOMATIC/trimmomatic-0.36.jar SE untrimmed_fastq/SRR098283.fastq trimmed_fastq/SRR098283.fastq_trim.fastq SLIDINGWINDOW:4:20 MINLEN:20
+$ java -jar $EBROOTTRIMMOMATIC/trimmomatic-0.38.jar SE untrimmed_fastq/SRR098283.fastq trimmed_fastq/SRR098283.fastq_trim.fastq SLIDINGWINDOW:4:20 MINLEN:20
 ~~~
 {: .bash}
 
@@ -156,7 +151,7 @@ Your output will look something like this:
 ~~~
 TrimmomaticSE: Started with arguments:
  untrimmed_fastq/SRR098283.fastq trimmed_fastq/SRR098283.fastq_trim.fastq SLIDINGWINDOW:4:20 MINLEN:20
-Automatically using 4 threads
+Automatically using 3 threads
 Quality encoding detected as phred33
 Input Reads: 21564058 Surviving: 17030985 (78.98%) Dropped: 4533073 (21.02%)
 TrimmomaticSE: Completed successfully
@@ -179,7 +174,7 @@ Once you're finished, attempt the following exercise:
 > {: .solution}
 {: .challenge}
 
-You may have noticed that Trimmomatic not only automatically used 4 threads (i.e. CPUs or processors), 
+You may have noticed that Trimmomatic not only automatically used 3 threads (i.e. CPUs or processors), 
 but it also detected the
 quality encoding of our sample. It is always a good idea to
 double-check this or to enter the quality encoding manually.
@@ -221,24 +216,19 @@ quickly!
 $ for infile in `ls untrimmed_fastq`
 > do
 > outfile="${infile}"_trim.fastq
-> java -jar $EBROOTTRIMMOMATIC/trimmomatic-0.36.jar SE "untrimmed_fastq/${infile}" "trimmed_fastq/${outfile}" SLIDINGWINDOW:4:20 MINLEN:20
+> java -jar $EBROOTTRIMMOMATIC/trimmomatic-0.38.jar SE "untrimmed_fastq/${infile}" "trimmed_fastq/${outfile}" SLIDINGWINDOW:4:20 MINLEN:20
 > done
 ~~~
 {: .bash}
 
 There are two new parts in our `for` loop. First is the line:
 
-~~~
-$ for infile in `ls untrimmed_fastq`
-~~~
-{: .bash}
+**_$ for infile in `ls untrimmed_fastq`_**
 
 And second is the line:
 
-~~~
-> outfile="${infile}"_trim.fastq
-~~~
-{: .bash}
+**_> outfile="${infile}"_trim.fastq_**
+
 
 `infile` is the first variable in our loop and takes the value
 of each of the untrimmed FASTQ files. It does this by taking values from the command
@@ -319,7 +309,7 @@ control process!
 
 > ## Bonus Exercise (Advanced)
 >
-> Now that we've quality controled our samples, they should perform
+> Now that we've quality controlled our samples, they should perform
 > better on the quality tests run by FastQC. Go ahead and re-run
 > FastQC on your trimmed FASTQ files and visualize the HTML files
 > to see whether your per base sequence quality is higher after
