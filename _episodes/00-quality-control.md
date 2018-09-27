@@ -565,7 +565,7 @@ increase the odds that the program won't do what its readers think it does.
 > The `for` loop is interpreted as a multipart command.  If you press the up arrow on your keyboard to recall the command, it will be shown like so:
 >
 > ~~~   
-> $ for filename in *.zip; do; unzip $filename; done
+> $ for filename in *.zip; do unzip $filename; done
 > ~~~
 > {: .bash}
 > 
