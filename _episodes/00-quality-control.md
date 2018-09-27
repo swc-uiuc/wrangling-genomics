@@ -538,8 +538,8 @@ The shell itself doesn't care what the variable is called;
 if we wrote this loop as:
 
 ~~~
-_$ for x in *.zip_
-_> do_
+$ for x in *.zip
+> do
 > unzip $x
 > done
 ~~~
