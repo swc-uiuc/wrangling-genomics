@@ -81,7 +81,7 @@ helps speed up our alignment.
 Make sure to load the appropriate module first:
 ~~~
 $ module avail bwa  #Optional step: Displays all the modules with 'bwa' in its name
-$ module load BWA/0.7.15-IGB-gcc-4.9.4
+$ module load BWA/0.7.17-IGB-gcc-4.9.4
 ~~~
 {: .bash}
 
@@ -116,10 +116,7 @@ is faster and more accurate.
 
 Since we are working with short reads (36nt) we will be using BWA-backtrack. The general usage for BWA-backtrack is: 
 
-~~~
-$ bwa aln ref_genome.fasta input_file.fastq > output_file.sai
-~~~
-{: .bash}
+**_$ bwa aln ref_genome.fasta input_file.fastq > output_file.sai_**
 
 This will create a `.sai` file which is an intermediate file containing the suffix array indexes. 
     
@@ -187,10 +184,7 @@ displayed below with the different fields highlighted.
 
 First we will use the `bwa samse` command to convert the .sai file to SAM format. The usage for `bwa samse` is 
 
-~~~
-$ bwa samse ref_genome.fasta input_file.sai input_file.fastq > output_file.sam
-~~~
-{: .bash}
+**_$ bwa samse ref_genome.fasta input_file.sai input_file.fastq > output_file.sam_**
 
 The code in our case will look like: 
 
@@ -223,7 +217,7 @@ Your output will start out something like this:
 Next we convert the SAM file to BAM format for use by downstream tools. We use the `samtools` program with the `view` command and tell this command that the input is in SAM format (`-S`) and to output BAM format (`-b`). Remember to load the samtools module first!
 
 ~~~
-$ module load SAMtools/1.5-IGB-gcc-4.9.4
+$ module load SAMtools/1.7-IGB-gcc-4.9.4
 $ samtools view -S -b results/sam/SRR097977.aligned.sam > results/bam/SRR097977.aligned.bam
 ~~~
 {: .bash}
@@ -279,7 +273,7 @@ We have now generated a file with coverage information for every base. To identi
 Identify SNPs using bcftools:
 
 ~~~
-$ module load BCFtools/1.5-IGB-gcc-4.9.4
+$ module load BCFtools/1.7-IGB-gcc-4.9.4
 $ bcftools call -cv --ploidy 1 -Ob -o results/bcf/SRR097977_variants.bcf results/bcf/SRR097977_raw.bcf 
 ~~~
 {: .bash}
