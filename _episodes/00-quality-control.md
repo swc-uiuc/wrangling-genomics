@@ -61,6 +61,7 @@ We can view the first complete read in one of the files our dataset by using `he
 the first four lines.
 
 ~~~
+$ cd ~/dc_sample_data/untrimmed_fastq/
 $ head -n4 SRR098026.fastq
 ~~~
 {: .bash}
@@ -282,7 +283,7 @@ dcuser@ip-172-31-58-54:~/dc_workshop/data/untrimmed_fastq$
 {: .output}
 
 The FastQC program has created several new files within our
-`/data/untrimmed_fastq/` directory. 
+`~/dc_workshop/data/` directory. 
 
 ~~~
 $ ls
@@ -351,9 +352,9 @@ use a variant of the `cp` command called `scp`. The `s` stands for
 
 For the `cp` command, the syntax was:
 
-~~~
-$ cp my_file new_location
-~~~
+
+*$ cp my_file new_location*
+
 {: .bash}
 
 The syntax for `scp` is the same, but now `my_file` and
@@ -536,13 +537,12 @@ in order to make its purpose clearer to human readers.
 The shell itself doesn't care what the variable is called;
 if we wrote this loop as:
 
-~~~
-$ for x in *.zip
-> do
-> unzip $x
-> done
-~~~
-{: .bash}
+
+> $ for x in *.zip
+> \> do
+> \> unzip $x
+> \> done
+
 
 or:
 
