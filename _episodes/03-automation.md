@@ -283,7 +283,7 @@ Next we make a directory for our BWA index, and then create an index our referen
 
 ~~~
 mkdir ~/dc_workshop/data/bwa_index
-module load BWA/0.7.15-IGB-gcc-4.9.4
+module load BWA/0.7.17-IGB-gcc-4.9.4
 bwa index -p ~/dc_workshop/data/bwa_index/ecoli_rel606 $genome
 ~~~
 {: .output}
@@ -438,7 +438,7 @@ your script and add the following lines.
 3) convert the SAM file to BAM format:
 
 ~~~
-    module load SAMtools/1.5-IGB-gcc-4.9.4
+    module load SAMtools/1.7-IGB-gcc-4.9.4
     samtools view -S -b $sam > $bam
 ~~~
 {: .output}
@@ -468,7 +468,7 @@ read coverage
 7) call SNPs with bcftools:
 
 ~~~
-    module load BCFtools/1.5-IGB-gcc-4.9.4
+    module load BCFtools/1.7-IGB-gcc-4.9.4
     bcftools call -cv --ploidy 1 -Ob -o $variants $raw_bcf 
 ~~~
 {: .output}
@@ -491,7 +491,7 @@ cd ~/dc_workshop/results
 genome=~/dc_workshop/data/ref_genome/ecoli_rel606.fasta
 
 mkdir ~/dc_workshop/data/bwa_index
-module load BWA/0.7.15-IGB-gcc-4.9.4
+module load BWA/0.7.17-IGB-gcc-4.9.4
 bwa index -p ~/dc_workshop/data/bwa_index/ecoli_rel606 $genome
 index=~/dc_workshop/data/bwa_index/ecoli_rel606
 
@@ -514,13 +514,13 @@ for fq in ~/dc_workshop/data/trimmed_fastq_small/*.fastq
     bwa aln $index $fq > $sai
     bwa samse $index $sai $fq > $sam
     
-    module load SAMtools/1.5-IGB-gcc-4.9.4
+    module load SAMtools/1.7-IGB-gcc-4.9.4
     samtools view -S -b $sam > $bam
     samtools sort -o $sorted_bam $bam
     samtools index $sorted_bam
     samtools mpileup -g -f $genome $sorted_bam > $raw_bcf
 
-    module load BCFtools/1.5-IGB-gcc-4.9.4
+    module load BCFtools/1.7-IGB-gcc-4.9.4
     bcftools call -cv --ploidy 1 -Ob -o $variants $raw_bcf
     bcftools view $variants | vcfutils.pl varFilter - > $final_variants
     done
