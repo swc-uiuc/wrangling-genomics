@@ -656,5 +656,4 @@ variants are present in position 145?
 > you dont, there is a copy in `/home/classroom/hpcbio/DC-genomics-2018/.dc_sampledata_lite/solutions/wrangling-solutions/trimmed_fastq`.
 {: .challenge}
 
-
-
+{% include links.md %}
