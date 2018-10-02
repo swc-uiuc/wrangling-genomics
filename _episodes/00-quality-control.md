@@ -64,7 +64,7 @@ the first four lines.
 $ cd ~/dc_sample_data/untrimmed_fastq/
 $ head -n4 SRR098026.fastq
 ~~~
-{: .bash}
+{: .language-bash}
 
 ~~~
 @SRR098026.1 HWUSI-EAS1599_1:2:1:0:968 length=35
@@ -130,7 +130,7 @@ bad read.
 >> ~~~
 >> $ tail -n4 SRR098026.fastq
 >> ~~~
->> {: .bash}
+>> {: .language-bash}
 >> 
 >> ~~~
 >> @SRR098026.249 HWUSI-EAS1599_1:2:1:2:1057 length=35
@@ -204,14 +204,14 @@ Although copying our data would accomplish something similar, this way, the data
 ~~~
 $ ln -s /home/classroom/hpcbio/DC-genomics-2018/.dc_sampledata_lite/untrimmed_fastq/ ~/dc_workshop/data/
 ~~~
-{: .bash}
+{: .language-bash}
 
 Navigate to your data directory: 
 
 ~~~
 $ cd ~/dc_workshop/data/
 ~~~
-{: .bash}
+{: .language-bash}
 
 > ## Exercise
 > 
@@ -224,7 +224,7 @@ $ cd ~/dc_workshop/data/
 >> ~~~
 >> $ ls -l -h untrimmed_fastq/
 >> ~~~
->> {: .bash}
+>> {: .language-bash}
 >> 
 >> ~~~
 >> -rw-r--r-- 1 dcuser dcuser 840M Jul 30  2015 SRR097977.fastq
@@ -248,7 +248,7 @@ $ module load FastQC
 $ module list
 $ fastqc -o ./ untrimmed_fastq/*.fastq
 ~~~
-{: .bash}
+{: .language-bash}
 
 You will see an automatically updating output message telling you the 
 progress of the analysis. It will start like this: 
@@ -288,7 +288,7 @@ The FastQC program has created several new files within our
 ~~~
 $ ls
 ~~~
-{: .bash}
+{: .language-bash}
 
 ~~~
 SRR097977_fastqc.html  SRR098027_fastqc.html  SRR098281_fastqc.html
@@ -314,7 +314,7 @@ $ mkdir ~/dc_workshop/results/fastqc_untrimmed_reads
 $ mv *.zip ~/dc_workshop/results/fastqc_untrimmed_reads/
 $ mv *.html ~/dc_workshop/results/fastqc_untrimmed_reads/
 ~~~
-{: .bash}
+{: .language-bash}
 
 Now we can navigate into this results directory and do some closer
 inspection of our output files.
@@ -322,7 +322,7 @@ inspection of our output files.
 ~~~
 $ cd ~/dc_workshop/results/fastqc_untrimmed_reads/
 ~~~
-{: .bash}
+{: .language-bash}
 
 ## Viewing HTML files
 
@@ -332,7 +332,7 @@ HTML files as a webpage:
 ~~~
 $ open SRR097977_fastqc.html
 ~~~
-{: .bash}
+{: .language-bash}
 
 However, if you try this on Biocluster, you'll get an error: 
 
@@ -355,7 +355,7 @@ For the `cp` command, the syntax was:
 
 *$ cp my_file new_location*
 
-{: .bash}
+{: .language-bash}
 
 The syntax for `scp` is the same, but now `my_file` and
 `new_location` are on separate computers, so we need to give an 
@@ -368,14 +368,14 @@ top of your screen or the Cmd+t keyboard shortcut) and type:
 ~~~
 $ mkdir ~/Desktop/fastqc_html
 ~~~
-{: .bash}
+{: .language-bash}
 
 Now we can transfer our HTML files to our local computer using `scp`.
 
 ~~~
 $ scp hpcbio##@biologin.igb.illinois.edu:~/dc_workshop/results/fastqc_untrimmed_reads/*.html ~/Desktop/fastqc_html/
 ~~~
-{: .bash}
+{: .language-bash}
 
 This looks really complicated, so let's break it down. The first part
 of the command `hpcbio##@biologin.igb.illinois.edu` is
@@ -409,7 +409,7 @@ Now we can go to our new directory and open the HTML files.
 $ cd ~/Desktop/fastqc_html/
 $ open *.html
 ~~~
-{: .bash}
+{: .language-bash}
 
 Your computer will open each of the HTML files in your default web
 browser. Depending on your settings, this might be as six separate
@@ -439,7 +439,7 @@ the results subdirectory.
 $ cd ~/dc_workshop/results/fastqc_untrimmed_reads/
 $ ls
 ~~~
-{: .bash}
+{: .language-bash}
 
 ~~~
 SRR097977_fastqc.html  SRR098027_fastqc.html  SRR098281_fastqc.html
@@ -458,7 +458,7 @@ wildcard.
 ~~~
 $ unzip *.zip
 ~~~
-{: .bash}
+{: .language-bash}
 
 ~~~
 Archive:  SRR097977_fastqc.zip
@@ -486,7 +486,7 @@ $ for filename in *.zip
 > unzip $filename
 > done
 ~~~
-{: .bash}
+{: .language-bash}
 
 When the shell sees the keyword `for`,
 it knows to repeat a command (or group of commands) once for each item in a list.
@@ -567,7 +567,7 @@ increase the odds that the program won't do what its readers think it does.
 > ~~~   
 > $ for filename in *.zip; do unzip $filename; done
 > ~~~
-> {: .bash}
+> {: .language-bash}
 > 
 > When you check your history later, it will help you remember what you did!
 >
@@ -628,7 +628,7 @@ see for sure that it's a directory if we use the `-F` flag for `ls`.
 ~~~
 $ ls -F
 ~~~
-{: .bash}
+{: .language-bash}
 
 ~~~
 SRR097977_fastqc/      SRR098027_fastqc/      SRR098281_fastqc/
@@ -645,7 +645,7 @@ Let's see what files are present within one of these output directories.
 ~~~
 $ ls -F SRR097977_fastqc/
 ~~~
-{: .bash}
+{: .language-bash}
 
 ~~~
 fastqc_data.txt  fastqc.fo  fastqc_report.html	Icons/	Images/  summary.txt
@@ -657,7 +657,7 @@ Use `less` to preview the `summary.txt` file for this sample.
 ~~~
 $ less SRR097977_fastqc/summary.txt
 ~~~
-{: .bash}
+{: .language-bash}
 
 ~~~
 PASS    Basic Statistics        SRR097977.fastq
@@ -688,7 +688,7 @@ it to `~/dc_workshop/docs`.
 ~~~
 $ cat */summary.txt > ~/dc_workshop/docs/fastqc_summaries.txt
 ~~~
-{: .bash}
+{: .language-bash}
 
 > ## Exercise
 > 
@@ -703,7 +703,7 @@ $ cat */summary.txt > ~/dc_workshop/docs/fastqc_summaries.txt
 >> $ cd ~/dc_workshop/docs
 >> $ grep FAIL fastqc_summaries.txt
 >> ~~~
->> {: .bash}
+>> {: .language-bash}
 >> 
 >> ~~~
 >> FAIL	Per tile sequence quality	SRR097977.fastq
@@ -729,7 +729,7 @@ $ cat */summary.txt > ~/dc_workshop/docs/fastqc_summaries.txt
 >> ~~~
 >> $ grep FAIL fastqc_summaries.txt | cut -f 3 | sort | uniq
 >> ~~~
->> {: .bash}
+>> {: .language-bash}
 >>
 >> ~~~
 >> SRR097977.fastq
@@ -750,7 +750,7 @@ $ cat */summary.txt > ~/dc_workshop/docs/fastqc_summaries.txt
 >> ~~~
 >> $ grep FAIL fastqc_summaries.txt | cut -f 2 | sort | uniq -c
 >> ~~~
->> {: .bash}
+>> {: .language-bash}
 >> 
 >> ~~~
 >> 5 Kmer Content

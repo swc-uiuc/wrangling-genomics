@@ -36,7 +36,7 @@ First we will link in the reference genome data into our `data/` directory, usin
 $ cd ~/dc_workshop
 $ ln -s /home/classroom/hpcbio/DC-genomics-2018/.dc_sampledata_lite/ref_genome/ data/
 ~~~
-{: .bash}
+{: .language-bash}
 
 We will also link in a set of trimmed FASTQ files to work with. These are small subsets of our real trimmed data, 
 and will enable us to run our variant calling workflow quite quickly. 
@@ -44,7 +44,7 @@ and will enable us to run our variant calling workflow quite quickly.
 ~~~
 $ ln -s /home/classroom/hpcbio/DC-genomics-2018/.dc_sampledata_lite/trimmed_fastq_small/ data/
 ~~~
-{: .bash}
+{: .language-bash}
 
 You will also need to create directories for the results that will be generated as part of this workflow. We can do this in a single
 line of code because `mkdir` can accept multiple new directory
@@ -53,7 +53,7 @@ names as input.
 ~~~
 $ mkdir -p results/sai results/sam results/bam results/bcf results/vcf
 ~~~
-{: .bash}
+{: .language-bash}
 
 
 > ## Installing Software
@@ -83,13 +83,13 @@ Make sure to load the appropriate module first:
 $ module avail bwa  #Optional step: Displays all the modules with 'bwa' in its name
 $ module load BWA/0.7.17-IGB-gcc-4.9.4
 ~~~
-{: .bash}
+{: .language-bash}
 
 ~~~
 $ mkdir data/bwa_index
 $ bwa index -p data/bwa_index/ecoli_rel606 data/ref_genome/ecoli_rel606.fasta
 ~~~
-{: .bash}
+{: .language-bash}
 
 While the index is created, you will see output something like this:
 
@@ -131,7 +131,7 @@ iterating this whole process on all of our sample files.
 ~~~
 $ bwa aln data/bwa_index/ecoli_rel606 data/trimmed_fastq_small/SRR097977.fastq_trim.fastq > results/sai/SRR097977.aligned.sai
 ~~~
-{: .bash}
+{: .language-bash}
 
 You will see output that starts like this: 
 
@@ -194,7 +194,7 @@ $ bwa samse data/bwa_index/ecoli_rel606 \
         data/trimmed_fastq_small/SRR097977.fastq_trim.fastq > \
         results/sam/SRR097977.aligned.sam
 ~~~
-{: .bash}
+{: .language-bash}
 
 Your output will start out something like this: 
 
@@ -220,7 +220,7 @@ Next we convert the SAM file to BAM format for use by downstream tools. We use t
 $ module load SAMtools/1.7-IGB-gcc-4.9.4
 $ samtools view -S -b results/sam/SRR097977.aligned.sam > results/bam/SRR097977.aligned.bam
 ~~~
-{: .bash}
+{: .language-bash}
 
 
 ### Sort BAM file by coordinates
@@ -231,7 +231,7 @@ our output file with the `-o` option.
 ~~~
 $ samtools sort -o results/bam/SRR097977.aligned.sorted.bam results/bam/SRR097977.aligned.bam 
 ~~~
-{: .bash}
+{: .language-bash}
 
 
 > ## More Than One Way to . . . sort a SAM/BAM File
@@ -258,7 +258,7 @@ Do the first pass on variant calling by counting read coverage with samtools
 $ samtools mpileup -g -f data/ref_genome/ecoli_rel606.fasta \
             results/bam/SRR097977.aligned.sorted.bam > results/bcf/SRR097977_raw.bcf
 ~~~
-{: .bash}
+{: .language-bash}
 
 ~~~
 [mpileup] 1 samples in 1 input files
@@ -276,7 +276,7 @@ Identify SNPs using bcftools:
 $ module load BCFtools/1.7-IGB-gcc-4.9.4
 $ bcftools call -cv --ploidy 1 -Ob -o results/bcf/SRR097977_variants.bcf results/bcf/SRR097977_raw.bcf 
 ~~~
-{: .bash}
+{: .language-bash}
 
 Above we used several basic parameters, but it's always a good idea to look through all of the options in a 
 program before running. There are two variant calling models available in BCFtools, and we are using the `-c` 
@@ -293,7 +293,7 @@ Filter the SNPs for the final output in VCF format, using `vcfutils.pl`:
 ~~~
 $ bcftools view results/bcf/SRR097977_variants.bcf | vcfutils.pl varFilter - > results/vcf/SRR097977_final_variants.vcf
 ~~~
-{: .bash}
+{: .language-bash}
 
 `bcftools view` converts the binary format of bcf files into human readable format (tab-delimited) for `vcfutils.pl` to perform
 the filtering. Note that the output is in VCF format, which is a text format.
@@ -303,7 +303,7 @@ the filtering. Note that the output is in VCF format, which is a text format.
 ~~~
 $ less results/vcf/SRR097977_final_variants.vcf
 ~~~
-{: .bash}
+{: .language-bash}
 
 You will see the header (which describes the format), the time and date the file was
 created, the version of bcftools that was used, the command line parameters used, and 
@@ -395,7 +395,7 @@ to learn more about VCF file format.
 >> ~~~
 >> $ cut results/vcf/SRR097977_final_variants.vcf -f 6,2 | grep -v "##" | less
 >> ~~~
->> {: .bash}
+>> {: .language-bash}
 >> 
 >> ~~~ 
 >> POS     QUAL
@@ -431,7 +431,7 @@ In order for us to visualize the alignment files, we will need to index the BAM 
 ~~~
 $ samtools index results/bam/SRR097977.aligned.sorted.bam
 ~~~
-{: .bash}
+{: .language-bash}
 
 ### Viewing with `tview`
 
@@ -444,7 +444,7 @@ In order to visualize our mapped reads we use `tview`, giving it the sorted bam 
 ~~~
 $ samtools tview results/bam/SRR097977.aligned.sorted.bam data/ref_genome/ecoli_rel606.fasta
 ~~~
-{: .bash}
+{: .language-bash}
 
 ~~~
 1         11        21        31        41        51        61        71        81        91        101       111       121
@@ -497,7 +497,7 @@ instead organize files within a directory structure like we've been using in our
 $ mkdir ~/Desktop/files_for_igv
 $ cd ~/Desktop/files_for_igv
 ~~~
-{: .bash}
+{: .language-bash}
 
 Now we will transfer our files to that new directory. Remember to replace `hpcbio##` with your temporary username. The commands to `scp` always go in the terminal window that is connected to your
 local computer (not your Biocluster instance).
@@ -507,7 +507,7 @@ $ scp hpcbio##@biologin.igb.illinois.edu:~/dc_workshop/results/bam/SRR097977.ali
 $ scp hpcbio##@biologin.igb.illinois.edu:~/dc_workshop/data/ref_genome/ecoli_rel606.fasta ~/Desktop/files_for_igv
 $ scp hpcbio##@biologin.igb.illinois.edu:~/dc_workshop/results/vcf/SRR097977_final_variants.vcf ~/Desktop/files_for_igv
 ~~~
-{: .bash}
+{: .language-bash}
 
 You will need to type in your Biocluster password each time you call `scp`. 
 

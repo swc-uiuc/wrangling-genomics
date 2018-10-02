@@ -24,7 +24,7 @@ grep -B1 -A2 NNNNNNNNNN *.fastq > scripted_bad_reads.txt
 
 echo "Script finished!"
 ~~~
-{: .bash}
+{: .language-bash}
 
 That script was only two lines long, but shell scripts can be much more complicated
 than that and can be used to perform a large number of operations on one or many 
@@ -48,7 +48,7 @@ $ for filename in *.zip
 > unzip $filename
 > done
 ~~~
-{: .bash}
+{: .language-bash}
 
 And here's the one you wrote for running Trimmomatic on all of our `.fastq` sample files.
 
@@ -59,7 +59,7 @@ $ for infile in `ls untrimmed_fastq`
 > java -jar $EBROOTTRIMMOMATIC/trimmomatic-0.36.jar SE "untrimmed_fastq/${infile}" "trimmed_fastq/${outfile}" SLIDINGWINDOW:4:20 MINLEN:20
 > done
 ~~~
-{: .bash}
+{: .language-bash}
 
 In this lesson, we will create two shell scripts. The first will run our FastQC analysis, 
 including creating our summary file. To do this, we'll take each of the commands we entered to run FastQC and 
@@ -79,7 +79,7 @@ $ cd scripts
 $ touch read_qc.sh
 $ ls 
 ~~~
-{: .bash}
+{: .language-bash}
 
 ~~~
 read_qc.sh
@@ -92,7 +92,7 @@ building our script.
 ~~~
 $ nano read_qc.sh
 ~~~
-{: .bash}
+{: .language-bash}
 
 Enter the following pieces of code into your shell script (not into your terminal prompt).
 
@@ -188,7 +188,7 @@ Save your file and exit `nano`. We can now run our script:
 ~~~
 $ bash read_qc.sh
 ~~~
-{: .bash}
+{: .language-bash}
 
 ~~~
 Running FastQC ...
@@ -239,7 +239,7 @@ $ cd ~/dc_workshop/scripts
 $ touch run_variant_calling.sh
 $ ls 
 ~~~
-{: .bash}
+{: .language-bash}
 
 ~~~
 read_qc.sh  run_variant_calling.sh
@@ -252,7 +252,7 @@ building our script, like we did before.
 ~~~
 $ nano run_variant_calling.sh
 ~~~
-{: .bash}
+{: .language-bash}
 
 Enter the following pieces of code into your shell script (not into your terminal prompt).
 
@@ -315,7 +315,7 @@ for fq in ~/dc_workshop/data/trimmed_fastq_small/*.fastq
     echo "working with file $fq"
     done
 ~~~
-{: .bash}
+{: .language-bash}
 
 
 > ## Indentation
@@ -337,7 +337,7 @@ for fq in ~/dc_workshop/data/trimmed_fastq_small/*.fastq
 >> ~~~
 >> $ bash run_variant_calling.sh
 >> ~~~
->> {: .bash}
+>> {: .language-bash}
 >> 
 >> ~~~
 >> mkdir: cannot create directory ‘/home/a-m/hpcinstru02/dc_workshop/data/bwa_index’: File exists
@@ -538,7 +538,7 @@ Now we can run our script:
 ~~~
 $ bash run_variant_calling.sh
 ~~~
-{: .bash}
+{: .language-bash}
 
 > ## BWA variations
 > BWA is a software package for mapping low-divergent sequences 
@@ -560,7 +560,7 @@ $ bash run_variant_calling.sh
 > ~~~
 > $ mkdir -p results/sam results/bam results/bcf results/vcf
 > ~~~
-> {: .bash}
+> {: .language-bash}
 >
 > Assign file names to variables
 >
@@ -573,14 +573,14 @@ $ bash run_variant_calling.sh
 > $ variants=results/bcf/${base}_variants.bcf
 > $ final_variants=results/vcf/${base}_final_variants.vcf  
 > ~~~
-> {: .bash}
+> {: .language-bash}
 >
 > Run the alignment
 > 
 > ~~~
 > $ bwa mem -M $genome $fq > $sam
 > ~~~
-> {: .bash}
+> {: .language-bash}
 > 
 > As an exercise, try and change your existing script file, from using the `aln` method to the `mem` method.
 {: .callout}
@@ -605,7 +605,7 @@ Let's do a few comparisons.
 > > ~~~
 > > $ ls -lh /home/classroom/hpcbio/DC-genomics-2018/.dc_sampledata_lite/solutions/wrangling-solutions/trimmed_fastq
 > > ~~~
-> > {: .bash}
+> > {: .language-bash}
 > > 
 > > ~~~
 > > total 13G
@@ -615,7 +615,7 @@ Let's do a few comparisons.
 > > ~~~
 > > $ ls -lh ~/dc_workshop/data/trimmed_fastq_small
 > > ~~~
-> > {: .bash}
+> > {: .language-bash}
 > > 
 > > ~~~ 
 > > total 430M
@@ -634,7 +634,7 @@ Let's do a few comparisons.
 >> ~~~
 >> $ samtools tview ~/dc_workshop/results/bam/SRR098281_aligned_sorted.bam ~/dc_workshop/data/ref_genome/ecoli_rel606.fasta
 >> ~~~
->> {: .bash}
+>> {: .language-bash}
 >> 
 >> `T` is the variant. `G` is canonical. 
 > {: .solution}
@@ -650,7 +650,7 @@ variants are present in position 145?
 >> ~~~
 >> $ samtools tview /home/classroom/hpcbio/DC-genomics-2018/.dc_sampledata_lite/solutions/wrangling-solutions/variant_calling/bam/SRR098281_aligned_sorted.bam ~/dc_workshop/data/ref_genome/ecoli_rel606.fasta
 >> ~~~
->> {: .bash}
+>> {: .language-bash}
 >> 
 >> In the full-length file, `T` is still the only variant present at this location. 
 > {: .solution}

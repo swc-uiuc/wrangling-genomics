@@ -41,7 +41,7 @@ and then load it.
 $ module avail trimmomatic
 $ module load Trimmomatic/0.38-Java-1.8.0_152
 ~~~
-{: .bash}
+{: .language-bash}
 
 Note that a message from Biocluster comes up that explains how to use
 Trimmomatic. The basic command to run Trimmomatic starts like this:
@@ -118,7 +118,7 @@ node while requesting more CPUs.
 $ exit  #Exits current compute node
 $ srun --pty -p classroom -n 3 bash
 ~~~
-{: .bash}
+{: .language-bash}
 
 Navigate to your data directory and reload the Trimmomatic module:
 
@@ -126,14 +126,14 @@ Navigate to your data directory and reload the Trimmomatic module:
 $ cd ~/dc_workshop/data/
 $ module load Trimmomatic/0.38-Java-1.8.0_152
 ~~~
-{: .bash}
+{: .language-bash}
 
 Then make a directory for your output to be written to:
 
 ~~~
 $ mkdir trimmed_fastq
 ~~~
-{: .bash}
+{: .language-bash}
 
 We are going to run Trimmomatic on one of our single-end samples. We
 will use a sliding window of size 4 that will remove bases if the average 
@@ -144,7 +144,7 @@ this trimming step.
 ~~~
 $ java -jar $EBROOTTRIMMOMATIC/trimmomatic-0.38.jar SE untrimmed_fastq/SRR098283.fastq trimmed_fastq/SRR098283.fastq_trim.fastq SLIDINGWINDOW:4:20 MINLEN:20
 ~~~
-{: .bash}
+{: .language-bash}
 
 Your output will look something like this:
 
@@ -184,7 +184,7 @@ We can confirm that we have our output file:
 ~~~
 $ ls trimmed_fastq/SRR098283*
 ~~~
-{: .bash}
+{: .language-bash}
 
 ~~~
 trimmed_fastq/SRR098283.fastq_trim.fastq
@@ -197,7 +197,7 @@ input file because we've removed reads. We can confirm this:
 ~~~
 $ ls -lh *_fastq/SRR098283* 
 ~~~
-{: .bash}
+{: .language-bash}
 
 ~~~
 -rw-rw-r-- 1 hpcinstru02 hpcinstru02 3.0G Feb 19 19:47 SRR098283.fastq_trim.fastq
@@ -219,7 +219,7 @@ $ for infile in `ls untrimmed_fastq`
 > java -jar $EBROOTTRIMMOMATIC/trimmomatic-0.38.jar SE "untrimmed_fastq/${infile}" "trimmed_fastq/${outfile}" SLIDINGWINDOW:4:20 MINLEN:20
 > done
 ~~~
-{: .bash}
+{: .language-bash}
 
 There are two new parts in our `for` loop. First is the line:
 
@@ -246,7 +246,7 @@ running, take a look at your directory contents.
 ~~~
 $ ls trimmed_fastq/
 ~~~
-{: .bash}
+{: .language-bash}
 
 ~~~
 SRR097977.fastq_trim.fastq  SRR098027.fastq_trim.fastq  SRR098281.fastq_trim.fastq
@@ -262,7 +262,7 @@ SRR098026.fastq_trim.fastq  SRR098028.fastq_trim.fastq  SRR098283.fastq_trim.fas
 > ~~~
 > $ head -n4 SRR098026.fastq
 > ~~~
-> {: .bash}
+> {: .language-bash}
 >
 > ~~~
 > @SRR098026.1 HWUSI-EAS1599_1:2:1:0:968 length=35
@@ -279,7 +279,7 @@ SRR098026.fastq_trim.fastq  SRR098028.fastq_trim.fastq  SRR098283.fastq_trim.fas
 >> ~~~
 >> $ head -n4 trimmed_fastq/SRR098026.fastq_trim.fastq
 >> ~~~
->> {: .bash}
+>> {: .language-bash}
 >>
 >> ~~~
 >> @SRR098026.342 HWUSI-EAS1599_1:2:1:3:655 length=35
@@ -324,7 +324,7 @@ control process!
 >> $ mkdir ~/dc_workshop/results/fastqc_trimmed_reads
 >> $ fastqc -o ~/dc_workshop/results/fastqc_trimmed_reads ~/dc_workshop/data/trimmed_fastq/*.fastq
 >> ~~~
->> {: .bash}
+>> {: .language-bash}
 >>
 >> In a new tab in your local computer terminal do:
 >>
@@ -333,7 +333,7 @@ control process!
 >> $ scp hpcbio##@biologin.igb.illinois.edu:~/dc_workshop/results/fastqc_trimmed_reads/*.html ~/Desktop/fastqc_html/trimmed
 >> $ open ~/Desktop/fastqc_html/trimmed/*.html
 >> ~~~
->> {: .bash}
+>> {: .language-bash}
 >>
 >> Remember to replace hpcbio## with your own temporary username.
 >>
