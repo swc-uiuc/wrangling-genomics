@@ -136,7 +136,7 @@ $ mkdir trimmed_fastq
 {: .language-bash}
 
 We are going to run Trimmomatic on one of our single-end samples. We
-will use a sliding window of size 4 that will remove bases if the average 
+will use a sliding window of size 4 that will remove bases if the average
 phred score of that window is below 20 (like in our example above). We will also
 discard any reads that do not have at least 20 bases remaining after
 this trimming step.
@@ -174,7 +174,7 @@ Once you're finished, attempt the following exercise:
 > {: .solution}
 {: .challenge}
 
-You may have noticed that Trimmomatic not only automatically used 3 threads (i.e. CPUs or processors), 
+You may have noticed that Trimmomatic not only automatically used 3 threads (i.e. CPUs or processors),
 but it also detected the
 quality encoding of our sample. It is always a good idea to
 double-check this or to enter the quality encoding manually.
@@ -195,7 +195,7 @@ The output file is also a FASTQ file. It should be smaller than our
 input file because we've removed reads. We can confirm this:
 
 ~~~
-$ ls -lh *_fastq/SRR098283* 
+$ ls -lh *_fastq/SRR098283*
 ~~~
 {: .language-bash}
 
@@ -304,7 +304,7 @@ SRR098026.fastq_trim.fastq  SRR098028.fastq_trim.fastq  SRR098283.fastq_trim.fas
 {: .challenge}
 
 We've now completed the trimming and filtering steps of our quality
-control process! 
+control process!
 
 
 > ## Bonus Exercise (Advanced)
