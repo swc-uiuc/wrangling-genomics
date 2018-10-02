@@ -241,7 +241,10 @@ $ cd ~/dc_workshop/data/
 > {: .solution}
 {: .challenge}
 
-To run the FastQC program, we need to load the FASTQC module on Biocluster. Remember to take note of which specific module we have loaded (i.e. module list).  FastQC can accept multiple file names as input, so we can use the *.fastq wildcard to run FastQC on all of the FASTQ files in this directory.
+To run the FastQC program, we need to load the FASTQC module on Biocluster.
+Remember to take note of which specific module we have loaded (i.e. module
+list).  FastQC can accept multiple file names as input, so we can use the
+`*.fastq` wildcard to run FastQC on all of the FASTQ files in this directory.
 
 ~~~
 $ module load FastQC
@@ -352,9 +355,9 @@ use a variant of the `cp` command called `scp`. The `s` stands for
 
 For the `cp` command, the syntax was:
 
-
-*$ cp my_file new_location*
-
+~~~
+$ cp my_file new_location
+~~~
 {: .language-bash}
 
 The syntax for `scp` is the same, but now `my_file` and
@@ -483,7 +486,7 @@ discuss what we're doing with each line of our loop.
 ~~~
 $ for filename in *.zip
 > do
-> unzip $filename
+>     unzip $filename
 > done
 ~~~
 {: .language-bash}
@@ -540,7 +543,7 @@ if we wrote this loop as:
 ~~~
 $ for x in *.zip
 > do
-> unzip $x
+>     unzip $x
 > done
 ~~~
 {: .output}
@@ -550,7 +553,7 @@ or:
 ~~~
 $ for temperature in *.zip
 > do
-> unzip $temperature
+>     unzip $temperature
 > done
 ~~~
 {: .output}
@@ -761,8 +764,4 @@ $ cat */summary.txt > ~/dc_workshop/docs/fastqc_summaries.txt
 >> {: .output}
 > {: .solution}
 {: .challenge}
-
-
-
-
 
