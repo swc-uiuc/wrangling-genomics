@@ -85,7 +85,7 @@ $ ls
 ~~~
 read_qc.sh
 ~~~
-{: .output}
+{: .language-bash}
 
 We now have an empty file called `read_qc.sh` in our `scripts/` directory. We will now open this file in `nano` and start
 building our script.
@@ -102,7 +102,7 @@ Our first line will move us into the `data/` directory when we run our script.
 ~~~
 cd ~/dc_workshop/data/
 ~~~
-{: .output}
+{: .language-bash}
 
 Our next line will create a new directory to hold our FastQC output files. Here we are using the `-p` option for `mkdir`. This
 option forces `mkdir` to create the new directory, even if one of the parent directories doesn't already exist. It is a good
@@ -112,7 +112,7 @@ you do.'
 ~~~
 mkdir -p ~/dc_workshop/results/fastqc_untrimmed_reads
 ~~~
-{: .output}
+{: .language-bash}
 
 These next three lines will give us a status message to tell us that we are currently running FastQC, then will run FastQC
 on all of the files in our current directory with a `.fastq` extension.
@@ -122,7 +122,7 @@ module load FastQC/0.11.5-IGB-gcc-4.9.4-Java-1.8.0_152
 echo "Running FastQC ..."
 fastqc -o ~/dc_workshop/results/fastqc_untrimmed_reads/ untrimmed_fastq/*.fastq
 ~~~
-{: .output}
+{: .language-bash}
 
 
 The next line moves us to the results directory where we've stored our output.
@@ -130,7 +130,7 @@ The next line moves us to the results directory where we've stored our output.
 ~~~
 cd ~/dc_workshop/results/fastqc_untrimmed_reads/
 ~~~
-{: .output}
+{: .language-bash}
 
 The next five lines should look very familiar. First we give ourselves a status message to tell us that we're unzipping our ZIP
 files. Then we run our for loop to unzip all of the `.zip` files in this directory.
@@ -142,7 +142,7 @@ do
     unzip $filename
 done
 ~~~
-{: .output}
+{: .language-bash}
 
 Next we concatenate all of our summary files into a single output file, with a status message to remind ourselves that this is
 what we're doing.
@@ -151,7 +151,7 @@ what we're doing.
 echo "Saving summary..."
 cat */summary.txt > ~/dc_workshop/docs/fastqc_summaries.txt
 ~~~
-{: .output}
+{: .language-bash}
 
 > ## Using `echo` statements
 >
@@ -182,7 +182,7 @@ done
 echo "Saving summary..."
 cat */summary.txt > ~/dc_workshop/docs/fastqc_summaries.txt
 ~~~
-{: .output}
+{: .language-bash}
 
 Save your file and exit `nano`. We can now run our script:
 
@@ -203,7 +203,7 @@ Approx 25% complete for SRR097977.fastq
 .
 .
 ~~~
-{: .output}
+{: .language-bash}
 
 For each of your sample files, FastQC will ask if you want to replace the existing version with a new version. This is
 because we have already run FastQC on this samples files and generated all of the outputs. We are now doing this again using
@@ -212,7 +212,7 @@ our scripts. Go ahead and select `A` each time this message appears. It will app
 ~~~
 replace SRR097977_fastqc/Icons/fastqc_icon.png? [y]es, [n]o, [A]ll, [N]one, [r]ename:
 ~~~
-{: .output}
+{: .language-bash}
 
 ## Automating the Rest of our Variant Calling Workflow
 
@@ -245,7 +245,7 @@ $ ls
 ~~~
 read_qc.sh  run_variant_calling.sh
 ~~~
-{: .output}
+{: .language-bash}
 
 We now have a new empty file called `run_variant_calling.sh` in our `scripts/` directory. We will open this file in `nano` and start
 building our script, like we did before.
@@ -263,7 +263,7 @@ in the right location.
 ~~~
 cd ~/dc_workshop/results
 ~~~
-{: .output}
+{: .language-bash}
 
 Next we tell our script where to find the reference genome by assigning the `genome` variable to
 the path to our reference genome:
@@ -271,7 +271,7 @@ the path to our reference genome:
 ~~~
 genome=~/dc_workshop/data/ref_genome/ecoli_rel606.fasta
 ~~~
-{: .output}
+{: .language-bash}
 
 > ## Creating Variables
 > Within the Bash shell you can create variables at any time (as we did
@@ -287,21 +287,21 @@ mkdir ~/dc_workshop/data/bwa_index
 module load BWA/0.7.17-IGB-gcc-4.9.4
 bwa index -p ~/dc_workshop/data/bwa_index/ecoli_rel606 $genome
 ~~~
-{: .output}
+{: .language-bash}
 
 We will also create another varible for the BWA index we just made:
 
 ~~~
 index=~/dc_workshop/data/bwa_index/ecoli_rel606
 ~~~
-{: .output}
+{: .language-bash}
 
 And create the directory structure to store our results in:
 
 ~~~
 mkdir -p sai sam bam bcf vcf
 ~~~
-{: .output}
+{: .language-bash}
 
 We will now use a loop to run the variant calling workflow on each of our FASTQ files. The full list of commands
 within the loop will be executed once for each of the FASTQ files in the `data/trimmed_fastq/` directory.
@@ -317,15 +317,6 @@ do
 done
 ~~~
 {: .language-bash}
-
-
-> ## Indentation
->
-> All of the statements within your `for` loop (i.e. everything after the `for` line and including the `done` line)
-> need to be indented. This indicates to the shell interpretor that these statements are all part of the `for` loop
-> and should be done once per input.
->
-{: .callout}
 
 
 > ## Exercise
@@ -377,9 +368,9 @@ to a new variable called `base` variable. Add `done` again at the end so we can 
 ~~~
     base=$(basename $fq .fastq_trim.fastq)
     echo "base name is $base"
-    done
+done
 ~~~
-{: .output}
+{: .language-bash}
 
 Now if you save and run your script, the final lines of your output should look like this:
 
@@ -417,24 +408,24 @@ Remember to delete the `done` line from your script before adding these lines.
     variants=~/dc_workshop/results/bcf/${base}_variants.bcf
     final_variants=~/dc_workshop/results/vcf/${base}_final_variants.vcf
 ~~~
-{: .output}
+{: .language-bash}
 
-Now that we've created our variables, we can start doing the steps of our workflow. Remove the `done` line from the end of
-your script and add the following lines.
+Now that we've created our variables, we can start doing the steps of our workflow. Remove the
+`done` line from the end of your script and add the following lines.
 
 1) align the reads to the reference genome and output a `.sai` file:
 
 ~~~
     bwa aln $index $fq > $sai
 ~~~
-{: .output}
+{: .language-bash}
 
 2) convert the output to SAM format:
 
 ~~~
     bwa samse $index $sai $fq > $sam
 ~~~
-{: .output}
+{: .language-bash}
 
 3) convert the SAM file to BAM format:
 
@@ -442,21 +433,21 @@ your script and add the following lines.
     module load SAMtools/1.7-IGB-gcc-4.9.4
     samtools view -S -b $sam > $bam
 ~~~
-{: .output}
+{: .language-bash}
 
 4) sort the BAM file:
 
 ~~~
     samtools sort -o $sorted_bam $bam
 ~~~
-{: .output}
+{: .language-bash}
 
 5) index the BAM file for display purposes:
 
 ~~~
     samtools index $sorted_bam
 ~~~
-{: .output}
+{: .language-bash}
 
 6) do the first pass on variant calling by counting
 read coverage
@@ -464,7 +455,7 @@ read coverage
 ~~~
     samtools mpileup -g -f $genome $sorted_bam > $raw_bcf
 ~~~
-{: .output}
+{: .language-bash}
 
 7) call SNPs with bcftools:
 
@@ -472,15 +463,15 @@ read coverage
     module load BCFtools/1.7-IGB-gcc-4.9.4
     bcftools call -cv --ploidy 1 -Ob -o $variants $raw_bcf
 ~~~
-{: .output}
+{: .language-bash}
 
 8) filter the SNPs for the final output:
 
 ~~~
     bcftools view $variants | vcfutils.pl varFilter - > $final_variants
-    done
+done
 ~~~
-{: .output}
+{: .language-bash}
 
 We added a `done` line after the SNP filtering step because this is the last step in our `for` loop.
 
@@ -526,7 +517,7 @@ do
     bcftools view $variants | vcfutils.pl varFilter - > $final_variants
 done
 ~~~
-{: .output}
+{: .language-bash}
 
 > ## Exercise
 > It's a good idea to add comments to your code so that you (or a collaborator) can make sense of what you did later.
