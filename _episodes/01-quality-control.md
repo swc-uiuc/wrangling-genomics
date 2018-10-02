@@ -546,7 +546,7 @@ $ for x in *.zip
 >     unzip $x
 > done
 ~~~
-{: .output}
+{: .language-bash}
 
 or:
 
@@ -556,7 +556,7 @@ $ for temperature in *.zip
 >     unzip $temperature
 > done
 ~~~
-{: .output}
+{: .language-bash}
 
 it would work exactly the same way.
 *Don't do this.*
@@ -622,7 +622,7 @@ SRR098026_fastqc       SRR098028_fastqc       SRR098283_fastqc
 SRR098026_fastqc.html  SRR098028_fastqc.html  SRR098283_fastqc.html
 SRR098026_fastqc.zip   SRR098028_fastqc.zip   SRR098283_fastqc.zip
 ~~~
-{:. output}
+{: .output}
 
 The `.html` files and the uncompressed `.zip` files are still present,
 but now we also have a new directory for each of our samples. We can
@@ -765,3 +765,4 @@ $ cat */summary.txt > ~/dc_workshop/docs/fastqc_summaries.txt
 > {: .solution}
 {: .challenge}
 
+{% include links.md %}
