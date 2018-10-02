@@ -525,17 +525,21 @@ Your IGV browser should look like the screenshot below:
 
 There should be two tracks: one corresponding to our BAM file and the other for our VCF file.
 
-In the **VCF track**, each bar across the top of the plot shows the allele fraction for a single locus. The second bar shows
-the genotypes for each locus in each *sample*. We only have one sample called here so we only see a single line. Dark blue =
-heterozygous, Cyan = homozygous variant, Grey = reference.  Filtered entries are transparent.
+In the **VCF track**, each bar across the top of the plot shows the allele fraction for a single
+locus. The second bar shows the genotypes for each locus in each *sample*. We only have one sample
+called here so we only see a single line. Dark blue = heterozygous, Cyan = homozygous variant, Grey
+= reference.  Filtered entries are transparent.
 
-Zoom in to inspect variants you see in your filtered VCF file to become more familiar with IGV. See how quality information
-corresponds to alignment information at those loci.
-Use [this website](http://software.broadinstitute.org/software/igv/AlignmentData) and the links therein to understand how IGV colors the alignments.
+Zoom in to inspect variants you see in your filtered VCF file to become more familiar with IGV. See
+how quality information corresponds to alignment information at those loci.  Use [this
+website](http://software.broadinstitute.org/software/igv/AlignmentData) and the links therein to
+understand how IGV colors the alignments.
 
-Now that we've run through our workflow for a single sample, we want to repeat this workflow for our other five
-samples. However, we don't want to type each of these individual steps again five more times. That would be very
-time consuming and error-prone, and would become impossible as we gathered more and more samples. Luckily, we
-already know the tools we need to use to automate this workflow and run it on as many files as we want using a
-single line of code. Those tools are: wildcards, for loops, and bash scripts. We'll use all three in the next
-lesson.
+Now that we've run through our workflow for a single sample, we want to repeat this workflow for our
+other five samples. However, we don't want to type each of these individual steps again five more
+times. That would be very time consuming and error-prone, and would become impossible as we gathered
+more and more samples. Luckily, we already know the tools we need to use to automate this workflow
+and run it on as many files as we want using a single line of code. Those tools are: wildcards, for
+loops, and bash scripts. We'll use all three in the next lesson.
+
+{% include links.md %}
