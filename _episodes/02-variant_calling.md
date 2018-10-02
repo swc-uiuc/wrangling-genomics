@@ -18,7 +18,7 @@ keypoints:
 
 We have already trimmed our reads so now the next step is alignment of our quality reads to the reference genome.
 
-![workflow_align](../img/variant_calling_workflow_align.png)
+![workflow_align](../fig/variant_calling_workflow_align.png)
 
 We perform read alignment or mapping to determine where in the genome our reads originated from. There are a number of tools to
 choose from and, while there is no gold standard, there are some tools that are better suited for particular NGS analyses. We will be
@@ -151,7 +151,7 @@ You will see output that starts like this:
 
 ## Alignment cleanup
 
-![workflow_clean](../img/variant_calling_workflow_cleanup.png)
+![workflow_clean](../fig/variant_calling_workflow_cleanup.png)
 
 Post-alignment processing of the alignment file includes:
 
@@ -177,10 +177,10 @@ that follows corresponds to alignment information for a single read. Each alignm
 mapping information and a variable number of other fields for aligner specific information. An example entry from a SAM file is
 displayed below with the different fields highlighted.
 
-![sam_bam1](../img/sam_bam.png)
+![sam_bam1](../fig/sam_bam.png)
 
 
-![sam_bam2](../img/sam_bam3.png)
+![sam_bam2](../fig/sam_bam3.png)
 
 First we will use the `bwa samse` command to convert the .sai file to SAM format. The usage for `bwa samse` is
 
@@ -247,7 +247,7 @@ or transcriptome, often referred to as a Single Nucleotide Variant (SNV). The ca
 variant frequency and some measure of confidence. Similar to other steps in this workflow, there are number of tools available for
 variant calling. In this workshop we will be using `bcftools`, but there are a few things we need to do before actually calling the variants.
 
-![workflow](../img/variant_calling_workflow.png)
+![workflow](../fig/variant_calling_workflow.png)
 
 ### Step 1: Calculate the read coverage of positions in the genome
 
@@ -521,7 +521,7 @@ to unzip it, and then drag the program into your Applications folder.
 
 Your IGV browser should look like the screenshot below:
 
-![IGV](../img/igv-screenshot.png)
+![IGV](../fig/igv-screenshot.png)
 
 There should be two tracks: one corresponding to our BAM file and the other for our VCF file.
 
