@@ -47,7 +47,10 @@ Note that a message from Biocluster comes up that explains how to use
 Trimmomatic. The basic command to run Trimmomatic starts like this:
 
 
-**_$ java -jar $EBROOTTRIMMOMATIC/trimmomatic-0.38.jar_**
+~~~
+$ java -jar $EBROOTTRIMMOMATIC/trimmomatic-0.38.jar
+~~~
+{: .language-bash}
 
 
 `java` tells our computer that we're running a Java program. `-jar`
@@ -87,12 +90,18 @@ and options, see [the Trimmomatic manual](http://www.usadellab.org/cms/uploads/s
 
 We said above that a basic command for Trimmomatic looks like this:
 
-**_$ java -jar $EBROOTTRIMMOMATIC/trimmomatic-0.38.jar SE_**
+~~~
+$ java -jar $EBROOTTRIMMOMATIC/trimmomatic-0.38.jar SE
+~~~
+{: .language-bash}
 
 
 However, a complete command for Trimmomatic will look something like this:
 
-**_$ java -jar $EBROOTTRIMMOMATIC/trimmomatic-0.36.jar SE -threads 3 -phred64 SRR_1056.fastq SRR_1056_trimmed.fastq ILLUMINACLIP:SRR_adapters.fa SLIDINGWINDOW:4:20_**
+~~~
+$ java -jar $EBROOTTRIMMOMATIC/trimmomatic-0.36.jar SE -threads 3 -phred64 SRR_1056.fastq SRR_1056_trimmed.fastq ILLUMINACLIP:SRR_adapters.fa SLIDINGWINDOW:4:20
+~~~
+{: .language-bash}
 
 
 In this example, we've told Trimmomatic:
@@ -215,20 +224,25 @@ quickly!
 ~~~
 $ for infile in `ls untrimmed_fastq`
 > do
-> outfile="${infile}"_trim.fastq
-> java -jar $EBROOTTRIMMOMATIC/trimmomatic-0.38.jar SE "untrimmed_fastq/${infile}" "trimmed_fastq/${outfile}" SLIDINGWINDOW:4:20 MINLEN:20
+>     outfile="${infile}"_trim.fastq
+>     java -jar $EBROOTTRIMMOMATIC/trimmomatic-0.38.jar SE "untrimmed_fastq/${infile}" "trimmed_fastq/${outfile}" SLIDINGWINDOW:4:20 MINLEN:20
 > done
 ~~~
 {: .language-bash}
 
 There are two new parts in our `for` loop. First is the line:
 
-**_$ for infile in \`ls untrimmed_fastq\`_**
+~~~
+$ for infile in `ls untrimmed_fastq`
+~~~
+{: .language-bash}
 
 And second is the line:
 
-**_> outfile="${infile}"_trim.fastq_**
-
+~~~
+> outfile="${infile}"_trim.fastq
+~~~
+{: .language-bash}
 
 `infile` is the first variable in our loop and takes the value
 of each of the untrimmed FASTQ files. It does this by taking values from the command

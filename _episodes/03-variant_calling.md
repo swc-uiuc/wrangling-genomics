@@ -116,7 +116,10 @@ is faster and more accurate.
 
 Since we are working with short reads (36nt) we will be using BWA-backtrack. The general usage for BWA-backtrack is:
 
-**_$ bwa aln ref_genome.fasta input_file.fastq > output_file.sai_**
+~~~
+$ bwa aln ref_genome.fasta input_file.fastq > output_file.sai
+~~~
+{: .language-bash}
 
 This will create a `.sai` file which is an intermediate file containing the suffix array indexes.
 
@@ -184,7 +187,10 @@ displayed below with the different fields highlighted.
 
 First we will use the `bwa samse` command to convert the .sai file to SAM format. The usage for `bwa samse` is
 
-**_$ bwa samse ref_genome.fasta input_file.sai input_file.fastq > output_file.sam_**
+~~~
+$ bwa samse ref_genome.fasta input_file.sai input_file.fastq > output_file.sam
+~~~
+{: .language-bash}
 
 The code in our case will look like:
 
