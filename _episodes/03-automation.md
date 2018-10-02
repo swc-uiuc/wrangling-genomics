@@ -46,7 +46,7 @@ Here's the `for` loop you wrote for unzipping `.zip` files:
 ~~~
 $ for filename in *.zip
 > do
-> unzip $filename
+>     unzip $filename
 > done
 ~~~
 {: .language-bash}
@@ -56,8 +56,8 @@ And here's the one you wrote for running Trimmomatic on all of our `.fastq` samp
 ~~~
 $ for infile in `ls untrimmed_fastq`
 > do
-> outfile="${infile}"_trim.fastq
-> java -jar $EBROOTTRIMMOMATIC/trimmomatic-0.36.jar SE "untrimmed_fastq/${infile}" "trimmed_fastq/${outfile}" SLIDINGWINDOW:4:20 MINLEN:20
+>     outfile="${infile}"_trim.fastq
+>     java -jar $EBROOTTRIMMOMATIC/trimmomatic-0.36.jar SE "untrimmed_fastq/${infile}" "trimmed_fastq/${outfile}" SLIDINGWINDOW:4:20 MINLEN:20
 > done
 ~~~
 {: .language-bash}
@@ -138,9 +138,9 @@ files. Then we run our for loop to unzip all of the `.zip` files in this directo
 ~~~
 echo "Unzipping..."
 for filename in *.zip
-    do
+do
     unzip $filename
-    done
+done
 ~~~
 {: .output}
 
@@ -175,9 +175,9 @@ cd ~/dc_workshop/results/fastqc_untrimmed_reads/
 
 echo "Unzipping..."
 for filename in *.zip
-    do
+do
     unzip $filename
-    done
+done
 
 echo "Saving summary..."
 cat */summary.txt > ~/dc_workshop/docs/fastqc_summaries.txt
@@ -312,9 +312,9 @@ tell the script to `echo` the filename back to us so we can check which file we'
 
 ~~~
 for fq in ~/dc_workshop/data/trimmed_fastq_small/*.fastq
-    do
+do
     echo "working with file $fq"
-    done
+done
 ~~~
 {: .language-bash}
 
@@ -499,7 +499,7 @@ index=~/dc_workshop/data/bwa_index/ecoli_rel606
 mkdir -p sai sam bam bcf vcf
 
 for fq in ~/dc_workshop/data/trimmed_fastq_small/*.fastq
-    do
+do
     echo "working with file $fq"
     base=$(basename $fq .fastq_trim.fastq)
     echo "base name is $base"
@@ -524,7 +524,7 @@ for fq in ~/dc_workshop/data/trimmed_fastq_small/*.fastq
     module load BCFtools/1.7-IGB-gcc-4.9.4
     bcftools call -cv --ploidy 1 -Ob -o $variants $raw_bcf
     bcftools view $variants | vcfutils.pl varFilter - > $final_variants
-    done
+done
 ~~~
 {: .output}
 
