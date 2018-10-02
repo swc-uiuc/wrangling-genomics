@@ -13,7 +13,7 @@ keypoints:
 - "`for` loops let you perform the same set of operations on multiple files with a single command."
 ---
 
-# Bioinformatics workflows
+## Bioinformatics workflows
 
 When working with high-throughput sequencing data, the raw reads you get off of the sequencer will need to pass
 through a number of  different tools in order to generate your final desired output. The execution of this set of
@@ -38,7 +38,7 @@ within the community. The tools that are used to analyze data at different stage
 built under the assumption that the data will be provided in a specific format.
 
 
-# Quality Control
+## Quality Control
 
 The first step in the variant calling workflow is to take the FASTQ files received from the sequencing facility
 and assess the quality of the sequence reads.

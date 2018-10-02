@@ -13,7 +13,7 @@ keypoints:
 - "Data cleaning is an essential step in a genomics workflow."
 ---
 
-# Cleaning Reads
+## Cleaning Reads
 
 In the previous episode, we took a high-level look at the quality
 of each of our samples using FastQC. We vizualized per-base quality

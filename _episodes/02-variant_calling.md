@@ -14,7 +14,7 @@ keypoints:
 - "There are many different file formats for storing genomics data. It's important to understand these file formats and know how to convert among them."
 ---
 
-# Alignment to a reference genome
+## Alignment to a reference genome
 
 We have already trimmed our reads so now the next step is alignment of our quality reads to the reference genome.
 
@@ -28,7 +28,7 @@ sequences against a large reference genome. The alignment process consists of tw
 1. Indexing the reference genome
 2. Aligning the reads to the reference genome
 
-# Setting up
+## Setting up
 
 First we will link in the reference genome data into our `data/` directory, using a symbolic link.
 
