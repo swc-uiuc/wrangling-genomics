@@ -15,12 +15,13 @@ keypoints:
 
 ## Bioinformatics workflows
 
-When working with high-throughput sequencing data, the raw reads you get off of the sequencer will need to pass
-through a number of  different tools in order to generate your final desired output. The execution of this set of
-tools in a specified order is commonly referred to as a *workflow* or a *pipeline*.
+When working with high-throughput sequencing data, the raw reads you get off of
+the sequencer will need to pass through a number of  different tools in order to
+generate your final desired output. The execution of this set of tools in a
+specified order is commonly referred to as a *workflow* or a *pipeline*.
 
-An example of the workflow we will be using for our variant calling analysis is provided below with a brief
-description of each step.
+An example of the workflow we will be using for our variant calling analysis is
+provided below with a brief description of each step.
 
 ![workflow](../fig/variant_calling_workflow.png)
 
@@ -31,24 +32,27 @@ description of each step.
 4. Perform post-alignment clean-up
 5. Variant calling
 
-These workflows in bioinformatics adopt a plug-and-play approach in that the output of one tool can be easily
-used as input to another tool without any extensive configuration. Having standards for data formats is what
-makes this feasible. Standards ensure that data is stored in a way that is generally accepted and agreed upon
-within the community. The tools that are used to analyze data at different stages of the workflow are therefore
-built under the assumption that the data will be provided in a specific format.
+These workflows in bioinformatics adopt a plug-and-play approach in that the
+output of one tool can be easily used as input to another tool without any
+extensive configuration. Having standards for data formats is what makes this
+feasible. Standards ensure that data is stored in a way that is generally
+accepted and agreed upon within the community. The tools that are used to
+analyze data at different stages of the workflow are therefore built under the
+assumption that the data will be provided in a specific format.
 
 
 ## Quality Control
 
-The first step in the variant calling workflow is to take the FASTQ files received from the sequencing facility
-and assess the quality of the sequence reads.
+The first step in the variant calling workflow is to take the FASTQ files
+received from the sequencing facility and assess the quality of the sequence
+reads.
 
 ![workflow_qc](../fig/var_calling_workflow_qc.png)
 ## Details on the FASTQ format
 
 Although it looks complicated (and it is), it's easy to understand the
-[fastq](https://en.wikipedia.org/wiki/FASTQ_format) format with a little decoding. Some rules about the format
-include...
+[fastq](https://en.wikipedia.org/wiki/FASTQ_format) format with a little
+decoding. Some rules about the format include...
 
 |Line|Description|
 |----|-----------|
@@ -154,7 +158,8 @@ bad read.
 > Although we've used a particular quality encoding system to demonstrate interpretation of
 > read quality, different sequencing machines use different encoding systems. This means that,
 > depending on which sequencer you use to generate your data, a `#` may not be an indicator of
-> a poor quality base call. See this article for more details: https://en.wikipedia.org/wiki/FASTQ_format.
+> a poor quality base call. See this article for more details:
+> <https://en.wikipedia.org/wiki/FASTQ_format>.
 >
 > This mainly relates to older Solexa/Illumina data,
 > but it's essential that you know which sequencing platform was
@@ -164,24 +169,31 @@ bad read.
 {: .callout}
 
 ## Assessing Quality using FastQC
-In real life, you won't be assessing the quality of your reads by visually inspecting your
-FASTQ files. Rather, you'll be using a software program to assess read quality and
-filter out poor quality reads. We'll first use a program called [FastQC](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/) to visualize the quality of our reads.
-Later in our workflow, we'll use another program to filter out poor quality reads.
 
-FastQC has a number of features which can give you a quick impression of any problems your
-data may have, so that you can take these issues into consideration before moving forward with your
-analyses. Rather than looking at quality scores for each individual read, FastQC looks at
-quality collectively across all reads within a sample. The image below shows a FastQC-generated plot that indicates
-a very high quality sample:
+In real life, you won't be assessing the quality of your reads by visually
+inspecting your FASTQ files. Rather, you'll be using a software program to
+assess read quality and filter out poor quality reads. We'll first use a program
+called [FastQC](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/) to
+visualize the quality of our reads.  Later in our workflow, we'll use another
+program to filter out poor quality reads.
+
+FastQC has a number of features which can give you a quick impression of any
+problems your data may have, so that you can take these issues into
+consideration before moving forward with your analyses. Rather than looking at
+quality scores for each individual read, FastQC looks at quality collectively
+across all reads within a sample. The image below shows a FastQC-generated plot
+that indicates a very high quality sample:
 
 ![good_quality](../fig/good_quality1.8.png)
 
-The x-axis displays the base position in the read, and the y-axis shows quality scores. In this
-example, the sample contains reads that are 40 bp long. For each position, there is a
-box-and-whisker plot showing the distribution of quality scores for all reads at that position.
-The horizontal red line indicates the median quality score and the yellow box shows the inter-quartile range (25%-75%). This means that 50% of reads have a quality score that falls within the
-range of the yellow box at that position. The whiskers show the range from the 10% and 90% points.
+The x-axis displays the base position in the read, and the y-axis shows quality
+scores. In this example, the sample contains reads that are 40 bp long. For each
+position, there is a box-and-whisker plot showing the distribution of quality
+scores for all reads at that position.  The horizontal red line indicates the
+median quality score and the yellow box shows the inter-quartile range
+(25%-75%). This means that 50% of reads have a quality score that falls within
+the range of the yellow box at that position. The whiskers show the range from
+the 10% and 90% points.
 
 For each position in this sample, the quality values do not drop much lower than 32. This
 is a high quality score. The plot background is also color-coded to identify good (green),
@@ -191,15 +203,28 @@ Now let's take a look at a quality plot on the other end of the spectrum.
 
 ![bad_quality](../fig/bad_quality1.8.png)
 
-Here, we see positions within the read in which the boxes span a much wider range. Also, quality scores drop quite low into the "bad" range, particularly on the tail end of the reads. The FastQC tool produces several other diagnostic plots to assess sample quality, in addition to the one plotted above.
+Here, we see positions within the read in which the boxes span a much wider
+range. Also, quality scores drop quite low into the "bad" range, particularly on
+the tail end of the reads. The FastQC tool produces several other diagnostic
+plots to assess sample quality, in addition to the one plotted above.
 
 ## Running FastQC
 
-We will be working with a set of sample data that is located in a hidden directory (`.dc_sampledata_lite`). First, we
-will create a symbolic link to some of these hidden files to the `data` directory your created at [the end of our
-last lesson](http://www.datacarpentry.org/shell-genomics/06-organization/). `ln` stands for link. Hardlinks typically only work for files (not directories), and they basically act as another name for the same data that is stored on your harddrive. However here, we use the `-s` flag, which stands for a symbolic link (symlink). A symlink creates a file that stores the path of another file. This allows you to access the information in that file with a new path without moving the data on your hard drive.
+We will be working with a set of sample data that is located in a hidden
+directory (`.dc_sampledata_lite`). First, we will create a symbolic link to some
+of these hidden files to the `data` directory your created at [the end of our
+last lesson](http://www.datacarpentry.org/shell-genomics/06-organization/). `ln`
+stands for link. Hardlinks typically only work for files (not directories), and
+they basically act as another name for the same data that is stored on your
+harddrive. However here, we use the `-s` flag, which stands for a symbolic link
+(symlink). A symlink creates a file that stores the path of another file. This
+allows you to access the information in that file with a new path without moving
+the data on your hard drive.
 
-Although copying our data would accomplish something similar, this way, the data only lives in one place on our hard drive, thereby taking up less space. This becomes important when your files become very large. Symbolic links allow you to have the data in one location on your hard drive, but call it from many.
+Although copying our data would accomplish something similar, this way, the data
+only lives in one place on our hard drive, thereby taking up less space. This
+becomes important when your files become very large. Symbolic links allow you to
+have the data in one location on your hard drive, but call it from many.
 
 ~~~
 $ ln -s /home/classroom/hpcbio/DC-genomics-2018/.dc_sampledata_lite/untrimmed_fastq/ ~/dc_workshop/data/
@@ -565,7 +590,8 @@ so meaningless names (like `x`) or misleading names (like `temperature`)
 increase the odds that the program won't do what its readers think it does.
 
 > ## Multipart commands
-> The `for` loop is interpreted as a multipart command.  If you press the up arrow on your keyboard to recall the command, it will be shown like so:
+> The `for` loop is interpreted as a multipart command.  If you press the up
+> arrow on your keyboard to recall the command, it will be shown like so:
 >
 > ~~~
 > $ for filename in *.zip; do unzip $filename; done
@@ -744,8 +770,9 @@ $ cat */summary.txt > ~/dc_workshop/docs/fastqc_summaries.txt
 >> ~~~
 >> {: .output}
 >>
->> All of our samples failed at least one test. If we want to see a table showing which tests failed, we can
->> use the same command we used above, but this time extract the
+>> All of our samples failed at least one test. If we want to see a table
+>> showing which tests failed, we can >> use the same command we used above, but
+>> this time extract the
 >> second field with `cut` (instead of the third) and add the `-c`
 >> option to `uniq` to count the number of times each unique value
 >> appears.
