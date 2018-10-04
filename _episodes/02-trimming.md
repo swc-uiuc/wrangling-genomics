@@ -26,7 +26,7 @@ have some reads within a sample,
 or some positions (near the begining or end of reads) across all
 reads that are low
 quality and should be discarded. We will use a program called
-[Trimmomatic](http://www.usadellab.org/cms/?page=trimmomatic) to
+[Trimmomatic][trimm] to
 filter poor quality reads and trim poor quality bases from our samples.
 
 ## Trimmomatic Options
@@ -86,7 +86,7 @@ available:
 We will use only a few of these options and trimming steps in our
 analysis. It is important to understand the steps you are using to
 clean your data. For more information about the Trimmomatic arguments
-and options, see [the Trimmomatic manual](http://www.usadellab.org/cms/uploads/supplementary/Trimmomatic/TrimmomaticManual_V0.32.pdf).
+and options, see [the Trimmomatic manual][manual].
 
 We said above that a basic command for Trimmomatic looks like this:
 
@@ -183,9 +183,8 @@ Once you're finished, attempt the following exercise:
 > {: .solution}
 {: .challenge}
 
-You may have noticed that Trimmomatic not only automatically used 3 threads (i.e. CPUs or processors),
-but it also detected the
-quality encoding of our sample. It is always a good idea to
+You may have noticed that Trimmomatic not only automatically used 3 threads (i.e. CPUs or
+processors), but it also detected the quality encoding of our sample. It is always a good idea to
 double-check this or to enter the quality encoding manually.
 
 We can confirm that we have our output file:
@@ -250,7 +249,8 @@ of each of the untrimmed FASTQ files. It does this by taking values from the com
 second variable in our loop and is defined by adding `_trim.fastq` to
 the end of our input file name. Use `{}` to wrap the variable so that `_trim.fastq` will
 not be interpreted as part of the variable name. In addition, quoting the shell variables is
-a good practice AND necessary if your variables have spaces in them. For more, check [Bash Pitfalls](http://mywiki.wooledge.org/BashPitfalls).
+a good practice AND necessary if your variables have spaces in them. For more, check
+[Bash Pitfalls][bash_pitfalls].
 There are no spaces before or after the `=`.
 
 Go ahead and run the for loop. It should take a few minutes for
@@ -356,5 +356,9 @@ control process!
 >> sequences pass that test.
 > {: .solution}
 {: .challenge}
+
+[trimm]: http://www.usadellab.org/cms/?page=trimmomatic
+[manual]: http://www.usadellab.org/cms/uploads/supplementary/Trimmomatic/TrimmomaticManual_V0.32.pdf
+[bash_pitfalls]: http://mywiki.wooledge.org/BashPitfalls
 
 {% include links.md %}
