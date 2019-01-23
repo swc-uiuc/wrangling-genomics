@@ -1,9 +1,9 @@
 ---
 layout: reference
-permalink: /reference/
-root: ..
 ---
 
 ## Glossary
 
 FIXME
+
+{% include links.md %}
