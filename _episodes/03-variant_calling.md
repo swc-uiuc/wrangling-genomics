@@ -117,6 +117,7 @@ is faster and more accurate.
 Since we are working with short reads (36nt) we will be using BWA-backtrack. The general usage for BWA-backtrack is:
 
 ~~~
+# do NOT execute
 $ bwa aln ref_genome.fasta input_file.fastq > output_file.sai
 ~~~
 {: .language-bash}
@@ -188,6 +189,7 @@ displayed below with the different fields highlighted.
 First we will use the `bwa samse` command to convert the .sai file to SAM format. The usage for `bwa samse` is
 
 ~~~
+# do NOT execute
 $ bwa samse ref_genome.fasta input_file.sai input_file.fastq > output_file.sam
 ~~~
 {: .language-bash}
