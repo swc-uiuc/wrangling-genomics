@@ -121,7 +121,7 @@ These next three lines will give us a status message to tell us that we are curr
 on all of the files in our current directory with a `.fastq` extension.
 
 ~~~
-module load FastQC/0.11.5-IGB-gcc-4.9.4-Java-1.8.0_152
+module load FastQC/0.11.8-IGB-gcc-4.9.4-Java-1.8.0_152 
 echo "Running FastQC ..."
 fastqc -o ~/dc_workshop/results/fastqc_untrimmed_reads/ untrimmed_fastq/*.fastq
 ~~~
@@ -171,7 +171,7 @@ cd ~/dc_workshop/data/
 mkdir -p ~/dc_workshop/results/fastqc_untrimmed_reads
 
 echo "Running FastQC ..."
-module load FastQC/0.11.5-IGB-gcc-4.9.4-Java-1.8.0_152
+module load FastQC/0.11.8-IGB-gcc-4.9.4-Java-1.8.0_152 
 fastqc -o  ~/dc_workshop/results/fastqc_untrimmed_reads/ untrimmed_fastq/*.fastq
 
 cd ~/dc_workshop/results/fastqc_untrimmed_reads/
