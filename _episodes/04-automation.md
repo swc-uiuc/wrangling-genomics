@@ -21,6 +21,7 @@ FASTQ files and put them into a new file.
 Here's the script you wrote:
 
 ~~~
+# do NOT execute
 grep -B1 -A2 NNNNNNNNNN *.fastq > scripted_bad_reads.txt
 
 echo "Script finished!"
@@ -44,6 +45,7 @@ assignments like this in our new shell scripts.
 Here's the `for` loop you wrote for unzipping `.zip` files:
 
 ~~~
+# do NOT execute
 $ for filename in *.zip
 > do
 >     unzip $filename
@@ -54,6 +56,7 @@ $ for filename in *.zip
 And here's the one you wrote for running Trimmomatic on all of our `.fastq` sample files.
 
 ~~~
+# do NOT execute
 $ for infile in `ls untrimmed_fastq`
 > do
 >     outfile="${infile}"_trim.fastq
