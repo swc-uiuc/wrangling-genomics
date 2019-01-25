@@ -381,6 +381,7 @@ use a variant of the `cp` command called `scp`. The `s` stands for
 For the `cp` command, the syntax was:
 
 ~~~
+# do NOT execute
 $ cp my_file new_location
 ~~~
 {: .language-bash}
@@ -566,6 +567,7 @@ The shell itself doesn't care what the variable is called;
 if we wrote this loop as:
 
 ~~~
+# do NOT execute
 $ for x in *.zip
 > do
 >     unzip $x
@@ -576,6 +578,7 @@ $ for x in *.zip
 or:
 
 ~~~
+# do NOT execute
 $ for temperature in *.zip
 > do
 >     unzip $temperature
@@ -594,6 +597,7 @@ increase the odds that the program won't do what its readers think it does.
 > arrow on your keyboard to recall the command, it will be shown like so:
 >
 > ~~~
+> # do NOT execute
 > $ for filename in *.zip; do unzip $filename; done
 > ~~~
 > {: .language-bash}
