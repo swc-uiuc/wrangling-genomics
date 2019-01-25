@@ -48,6 +48,7 @@ Trimmomatic. The basic command to run Trimmomatic starts like this:
 
 
 ~~~
+# do NOT execute
 $ java -jar $EBROOTTRIMMOMATIC/trimmomatic-0.38.jar
 ~~~
 {: .language-bash}
@@ -91,6 +92,7 @@ and options, see [the Trimmomatic manual][manual].
 We said above that a basic command for Trimmomatic looks like this:
 
 ~~~
+# do NOT execute
 $ java -jar $EBROOTTRIMMOMATIC/trimmomatic-0.38.jar SE
 ~~~
 {: .language-bash}
@@ -99,6 +101,7 @@ $ java -jar $EBROOTTRIMMOMATIC/trimmomatic-0.38.jar SE
 However, a complete command for Trimmomatic will look something like this:
 
 ~~~
+# do NOT execute
 $ java -jar $EBROOTTRIMMOMATIC/trimmomatic-0.36.jar SE -threads 3 -phred64 SRR_1056.fastq SRR_1056_trimmed.fastq ILLUMINACLIP:SRR_adapters.fa SLIDINGWINDOW:4:20
 ~~~
 {: .language-bash}
