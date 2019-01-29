@@ -184,7 +184,7 @@ quality scores for each individual read, FastQC looks at quality collectively
 across all reads within a sample. The image below shows a FastQC-generated plot
 that indicates a very high quality sample:
 
-![Good quality FASTQC report](../fig/good_quality1.8.png)
+![Depiction of high quality reads via the "Per base sequence quality" metric of a FASTQC report.](../fig/good_quality1.8.png)
 
 The x-axis displays the base position in the read, and the y-axis shows quality
 scores. In this example, the sample contains reads that are 40 bp long. For each
@@ -201,7 +201,7 @@ acceptable (yellow), and bad (red) quality scores.
 
 Now let's take a look at a quality plot on the other end of the spectrum.
 
-![Poor quality FASTQC report](../fig/bad_quality1.8.png)
+![Depiction of poor quality reads via the "Per base sequence quality" metric of a FASTQC report.](../fig/bad_quality1.8.png)
 
 Here, we see positions within the read in which the boxes span a much wider
 range. Also, quality scores drop quite low into the "bad" range, particularly on
