@@ -23,8 +23,8 @@ specified order is commonly referred to as a *workflow* or a *pipeline*.
 An example of the workflow we will be using for our variant calling analysis is
 provided below with a brief description of each step.
 
-![workflow](../fig/variant_calling_workflow.png)
-*Figure 1: Variant calling workflow*
+![Variant calling workflow](../fig/variant_calling_workflow.png)
+
 
 1. Quality control - Assessing quality using FastQC
 2. Quality control - Trimming and/or filtering reads (if necessary)
@@ -47,7 +47,7 @@ The first step in the variant calling workflow is to take the FASTQ files
 received from the sequencing facility and assess the quality of the sequence
 reads.
 
-![workflow_qc](../fig/var_calling_workflow_qc.png)
+![Quality control steps](../fig/var_calling_workflow_qc.png)
 ## Details on the FASTQ format
 
 Although it looks complicated (and it is), it's easy to understand the
@@ -184,7 +184,7 @@ quality scores for each individual read, FastQC looks at quality collectively
 across all reads within a sample. The image below shows a FastQC-generated plot
 that indicates a very high quality sample:
 
-![good_quality](../fig/good_quality1.8.png)
+![Good quality FASTQC report](../fig/good_quality1.8.png)
 
 The x-axis displays the base position in the read, and the y-axis shows quality
 scores. In this example, the sample contains reads that are 40 bp long. For each
@@ -201,7 +201,7 @@ acceptable (yellow), and bad (red) quality scores.
 
 Now let's take a look at a quality plot on the other end of the spectrum.
 
-![bad_quality](../fig/bad_quality1.8.png)
+![Poor quality FASTQC report](../fig/bad_quality1.8.png)
 
 Here, we see positions within the read in which the boxes span a much wider
 range. Also, quality scores drop quite low into the "bad" range, particularly on
