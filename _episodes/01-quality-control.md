@@ -24,7 +24,7 @@ An example of the workflow we will be using for our variant calling analysis is
 provided below with a brief description of each step.
 
 ![workflow](../fig/variant_calling_workflow.png)
-
+*Figure 1: Variant calling workflow*
 
 1. Quality control - Assessing quality using FastQC
 2. Quality control - Trimming and/or filtering reads (if necessary)
