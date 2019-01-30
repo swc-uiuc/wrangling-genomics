@@ -235,6 +235,7 @@ $ for infile in `ls untrimmed_fastq`
 There are two new parts in our `for` loop. First is the line:
 
 ~~~
+# do NOT execute
 $ for infile in `ls untrimmed_fastq`
 ~~~
 {: .language-bash}
@@ -242,6 +243,7 @@ $ for infile in `ls untrimmed_fastq`
 And second is the line:
 
 ~~~
+# do NOT execute
 > outfile="${infile}"_trim.fastq
 ~~~
 {: .language-bash}
