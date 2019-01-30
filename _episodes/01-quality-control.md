@@ -210,6 +210,15 @@ plots to assess sample quality, in addition to the one plotted above.
 
 ## Running FastQC
 
+> ## Warning
+> If we skipped the last episode of the command line lesson, do the following before continuing on:
+> ~~~
+> cd ~
+> mkdir -p dc_workshop/docs dc_workshop/data dc_workshop/results
+> ~~~
+> {: .language-bash}
+{: .callout}
+
 We will be working with a set of sample data that is located in a hidden
 directory (`.dc_sampledata_lite`). First, we will create a symbolic link to some
 of these hidden files to the `data` directory your created at [the end of our
@@ -225,15 +234,6 @@ Although copying our data would accomplish something similar, this way, the data
 only lives in one place on our hard drive, thereby taking up less space. This
 becomes important when your files become very large. Symbolic links allow you to
 have the data in one location on your hard drive, but call it from many.
-
-> ## Warning
-> If we skipped the last episode of the command line lesson, do the following before continuing on:
-> ~~~
-> cd ~
-> mkdir -p dc_workshop/docs dc_workshop/data dc_workshop/results
-> ~~~
-> {: .language-bash}
-{: .callout}
 
 ~~~
 $ ln -s /home/classroom/hpcbio/DC-genomics-2018/.dc_sampledata_lite/untrimmed_fastq/ ~/dc_workshop/data/
