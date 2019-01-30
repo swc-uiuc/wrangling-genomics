@@ -231,7 +231,6 @@ have the data in one location on your hard drive, but call it from many.
 > ~~~
 > cd ~
 > mkdir -p dc_workshop/docs dc_workshop/data dc_workshop/results
-> $ ln -s /home/classroom/hpcbio/DC-genomics-2018/.dc_sampledata_lite/untrimmed_fastq/ ~/dc_workshop/data/
 > ~~~
 > {: .language-bash}
 {: .callout}
