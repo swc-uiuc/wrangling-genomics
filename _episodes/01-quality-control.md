@@ -226,10 +226,21 @@ only lives in one place on our hard drive, thereby taking up less space. This
 becomes important when your files become very large. Symbolic links allow you to
 have the data in one location on your hard drive, but call it from many.
 
+> ## Warning
+> If we skipped the last episode of the command line lesson, do the following before continuing on:
+> ~~~
+> cd ~
+> mkdir -p dc_workshop/docs dc_workshop/data dc_workshop/results
+> $ ln -s /home/classroom/hpcbio/DC-genomics-2018/.dc_sampledata_lite/untrimmed_fastq/ ~/dc_workshop/data/
+> ~~~
+> {: .language-bash}
+{: .callout}
+
 ~~~
 $ ln -s /home/classroom/hpcbio/DC-genomics-2018/.dc_sampledata_lite/untrimmed_fastq/ ~/dc_workshop/data/
 ~~~
 {: .language-bash}
+
 
 Navigate to your data directory:
 
@@ -237,6 +248,7 @@ Navigate to your data directory:
 $ cd ~/dc_workshop/data/
 ~~~
 {: .language-bash}
+
 
 > ## Exercise
 >
