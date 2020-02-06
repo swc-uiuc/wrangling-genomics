@@ -34,7 +34,7 @@ First we will link in the reference genome data into our `data/` directory, usin
 
 ~~~
 $ cd ~/dc_workshop
-$ ln -s /home/classroom/hpcbio/DC-genomics-2018/.dc_sampledata_lite/ref_genome/ data/
+$ ln -s /home/classroom/hpcbio/DC-genomics-2020/.dc_sampledata_lite/ref_genome/ data/
 ~~~
 {: .language-bash}
 
