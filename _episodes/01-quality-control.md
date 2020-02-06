@@ -236,7 +236,7 @@ becomes important when your files become very large. Symbolic links allow you to
 have the data in one location on your hard drive, but call it from many.
 
 ~~~
-$ ln -s /home/classroom/hpcbio/DC-genomics-2018/.dc_sampledata_lite/untrimmed_fastq/ ~/dc_workshop/data/
+$ ln -s /home/classroom/hpcbio/DC-genomics-2020/.dc_sampledata_lite/untrimmed_fastq/ ~/dc_workshop/data/
 ~~~
 {: .language-bash}
 
