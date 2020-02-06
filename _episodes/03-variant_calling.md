@@ -42,7 +42,7 @@ We will also link in a set of trimmed FASTQ files to work with. These are small 
 and will enable us to run our variant calling workflow quite quickly.
 
 ~~~
-$ ln -s /home/classroom/hpcbio/DC-genomics-2018/.dc_sampledata_lite/trimmed_fastq_small/ data/
+$ ln -s /home/classroom/hpcbio/DC-genomics-2020/.dc_sampledata_lite/trimmed_fastq_small/ data/
 ~~~
 {: .language-bash}
 
