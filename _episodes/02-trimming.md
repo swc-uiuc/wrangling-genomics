@@ -49,7 +49,7 @@ Trimmomatic. The basic command to run Trimmomatic starts like this:
 
 ~~~
 # do NOT execute
-$ java -jar $EBROOTTRIMMOMATIC/trimmomatic-0.38.jar
+$ trimmomatic
 ~~~
 {: .language-bash}
 
@@ -93,7 +93,7 @@ We said above that a basic command for Trimmomatic looks like this:
 
 ~~~
 # do NOT execute
-$ java -jar $EBROOTTRIMMOMATIC/trimmomatic-0.38.jar SE
+$ trimmomatic SE
 ~~~
 {: .language-bash}
 
@@ -102,7 +102,7 @@ However, a complete command for Trimmomatic will look something like this:
 
 ~~~
 # do NOT execute
-$ java -jar $EBROOTTRIMMOMATIC/trimmomatic-0.36.jar SE -threads 3 -phred64 SRR_1056.fastq SRR_1056_trimmed.fastq ILLUMINACLIP:SRR_adapters.fa SLIDINGWINDOW:4:20
+$ trimmomatic SE -threads 3 -phred64 SRR_1056.fastq SRR_1056_trimmed.fastq ILLUMINACLIP:SRR_adapters.fa SLIDINGWINDOW:4:20
 ~~~
 {: .language-bash}
 
@@ -154,7 +154,7 @@ discard any reads that do not have at least 20 bases remaining after
 this trimming step.
 
 ~~~
-$ java -jar $EBROOTTRIMMOMATIC/trimmomatic-0.38.jar SE untrimmed_fastq/SRR098283.fastq trimmed_fastq/SRR098283.fastq_trim.fastq SLIDINGWINDOW:4:20 MINLEN:20
+$ trimmomatic SE untrimmed_fastq/SRR098283.fastq trimmed_fastq/SRR098283.fastq_trim.fastq SLIDINGWINDOW:4:20 MINLEN:20
 ~~~
 {: .language-bash}
 
@@ -227,7 +227,7 @@ quickly!
 $ for infile in `ls untrimmed_fastq`
 > do
 >     outfile="${infile}"_trim.fastq
->     java -jar $EBROOTTRIMMOMATIC/trimmomatic-0.38.jar SE "untrimmed_fastq/${infile}" "trimmed_fastq/${outfile}" SLIDINGWINDOW:4:20 MINLEN:20
+>     trimmomatic SE "untrimmed_fastq/${infile}" "trimmed_fastq/${outfile}" SLIDINGWINDOW:4:20 MINLEN:20
 > done
 ~~~
 {: .language-bash}
