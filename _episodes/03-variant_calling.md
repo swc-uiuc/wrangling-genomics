@@ -259,11 +259,12 @@ variant calling. In this workshop we will be using `bcftools`, but there are a f
 
 ### Step 1: Calculate the read coverage of positions in the genome
 
-Do the first pass on variant calling by counting read coverage with samtools
-[mpileup](http://samtools.sourceforge.net/mpileup.shtml):
+Do the first pass on variant calling by counting read coverage with bcftools
+[mpileup](http://www.htslib.org/workflow/#mapping_to_variant):
 
 ~~~
-$ samtools mpileup -g -f data/ref_genome/ecoli_rel606.fasta \
+$ module load BCFtools/1.9-IGB-gcc-4.9.4
+$ bcftools mpileup -g -Ob -f data/ref_genome/ecoli_rel606.fasta \
             results/bam/SRR097977.aligned.sorted.bam > results/bcf/SRR097977_raw.bcf
 ~~~
 {: .language-bash}
@@ -281,7 +282,6 @@ We have now generated a file with coverage information for every base. To identi
 Identify SNPs using bcftools:
 
 ~~~
-$ module load BCFtools/1.7-IGB-gcc-4.9.4
 $ bcftools call -cv --ploidy 1 -Ob -o results/bcf/SRR097977_variants.bcf results/bcf/SRR097977_raw.bcf
 ~~~
 {: .language-bash}
