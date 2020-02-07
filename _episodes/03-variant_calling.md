@@ -264,7 +264,7 @@ Do the first pass on variant calling by counting read coverage with bcftools
 
 ~~~
 $ module load BCFtools/1.9-IGB-gcc-4.9.4
-$ bcftools mpileup -g -Ob -f data/ref_genome/ecoli_rel606.fasta \
+$ bcftools mpileup -Ob -f data/ref_genome/ecoli_rel606.fasta \
             results/bam/SRR097977.aligned.sorted.bam > results/bcf/SRR097977_raw.bcf
 ~~~
 {: .language-bash}
