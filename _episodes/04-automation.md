@@ -433,7 +433,7 @@ Now that we've created our variables, we can start doing the steps of our workfl
 3) convert the SAM file to BAM format:
 
 ~~~
-    module load SAMtools/1.7-IGB-gcc-4.9.4
+    module load SAMtools/1.9-IGB-gcc-4.9.4
     samtools view -S -b $sam > $bam
 ~~~
 {: .language-bash}
@@ -456,14 +456,14 @@ Now that we've created our variables, we can start doing the steps of our workfl
 read coverage
 
 ~~~
-    samtools mpileup -g -f $genome $sorted_bam > $raw_bcf
+    module load BCFtools/1.9-IGB-gcc-4.9.4
+    bcftools mpileup -Ob -f $genome $sorted_bam > $raw_bcf
 ~~~
 {: .language-bash}
 
 7) call SNPs with bcftools:
 
 ~~~
-    module load BCFtools/1.7-IGB-gcc-4.9.4
     bcftools call -cv --ploidy 1 -Ob -o $variants $raw_bcf
 ~~~
 {: .language-bash}
@@ -513,9 +513,9 @@ do
     samtools view -S -b $sam > $bam
     samtools sort -o $sorted_bam $bam
     samtools index $sorted_bam
-    samtools mpileup -g -f $genome $sorted_bam > $raw_bcf
-
-    module load BCFtools/1.7-IGB-gcc-4.9.4
+    
+    module load BCFtools/1.9-IGB-gcc-4.9.4
+    bcftools mpileup -Ob -f $genome $sorted_bam > $raw_bcf
     bcftools call -cv --ploidy 1 -Ob -o $variants $raw_bcf
     bcftools view $variants | vcfutils.pl varFilter - > $final_variants
 done
